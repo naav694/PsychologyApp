@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activity.MainActivity">
+    tools:context=".view.activity.LoginActivity">
 
     <include
-        android:id="@+id/mainToolbar"
+        android:id="@+id/loginToolbar"
         layout="@layout/toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
