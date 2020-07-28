@@ -5,8 +5,8 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import mx.rokegcode.psychologyapp.model.QuestionRoom;
-import mx.rokegcode.psychologyapp.model.UserRoom;
+import mx.rokegcode.psychologyapp.model.data.QuestionRoom;
+import mx.rokegcode.psychologyapp.model.data.UserRoom;
 
 @Database(entities = {UserRoom.class, QuestionRoom.class}, version =  2)
 public abstract class AppDatabase extends RoomDatabase {

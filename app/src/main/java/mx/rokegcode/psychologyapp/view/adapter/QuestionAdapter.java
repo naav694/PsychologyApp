@@ -12,27 +12,26 @@ import android.widget.TextView;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
 import mx.rokegcode.psychologyapp.R;
-import mx.rokegcode.psychologyapp.model.QuestionRoom;
+import mx.rokegcode.psychologyapp.model.data.QuestionRoom;
 
 public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHolder> implements View.OnClickListener {
-
-    LayoutInflater inflater; //TODO Esto no debe ir global
-    List<QuestionRoom> model;
+    List<QuestionRoom> questionList;
 
     //Listener
     private View.OnClickListener listener;
 
-    public QuestionAdapter(Context context, List<QuestionRoom> model) {
-        this.inflater = LayoutInflater.from(context); //TODO No se debe poner esto en el constructor
-        this.model = model; //TODO questionList
+    public QuestionAdapter(List<QuestionRoom> questionList) {
+        this.questionList = questionList;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.list_question,parent,false); //TODO LayoutInflater.from(parent.context).inflate(R.layout.list_question, parent, false)
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_question,parent,false);
         view.setOnClickListener(this);
         return new ViewHolder(view);
     }
@@ -43,15 +42,12 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.txtQuestion.setText(model.get(position).getQuestion());
-
-        boolean isExpanded = model.get(position).isExpanded();
-        holder.expandableLayout.setVisibility(isExpanded ? View.VISIBLE: View.GONE);
+        holder.txtQuestion.setText(questionList.get(position).getQuestion());
     }
 
     @Override
     public int getItemCount() {
-        return model.size();
+        return questionList.size();
     }
 
     @Override
@@ -62,28 +58,16 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
     }
 
     public void refreshInfo(List<QuestionRoom> model){
-        this.model = model;
+        this.questionList = model;
         notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView txtQuestion;
-        EditText txtAnswer;
-        ImageView btnExpandir;
-        LinearLayout expandableLayout;
+        @BindView(R.id.txtQuestion) TextView txtQuestion;
+        @BindView(R.id.txtAnswer) EditText getTxtAnswer;
 
         public ViewHolder(@NonNull View itemView){
             super(itemView);
-            //TODO Aqui también podrías utilizar ButterKnife
-            txtQuestion = itemView.findViewById(R.id.txtQuestion);
-            expandableLayout = itemView.findViewById(R.id.expandableLayout);
-            btnExpandir = itemView.findViewById(R.id.btnExpandir);
-
-            btnExpandir.setOnClickListener(view -> { //TODO Carga todas las preguntas desde un principio
-                QuestionRoom question = model.get(getAdapterPosition());
-                question.setExpanded(!question.isExpanded());
-                notifyItemChanged(getAdapterPosition());
-            });
         }
     }
 }

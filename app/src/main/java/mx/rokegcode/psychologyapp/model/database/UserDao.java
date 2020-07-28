@@ -7,7 +7,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import mx.rokegcode.psychologyapp.model.UserRoom;
+import mx.rokegcode.psychologyapp.model.data.UserRoom;
 
 @Dao
 public interface UserDao {

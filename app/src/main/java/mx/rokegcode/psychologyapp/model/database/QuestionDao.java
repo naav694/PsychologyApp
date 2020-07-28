@@ -4,7 +4,7 @@ import java.util.List;
 
 import androidx.room.Dao;
 import androidx.room.Query;
-import mx.rokegcode.psychologyapp.model.QuestionRoom;
+import mx.rokegcode.psychologyapp.model.data.QuestionRoom;
 
 @Dao
 public interface QuestionDao {

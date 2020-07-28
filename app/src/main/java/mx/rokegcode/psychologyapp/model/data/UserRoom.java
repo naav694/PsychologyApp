@@ -1,4 +1,4 @@
-package mx.rokegcode.psychologyapp.model;
+package mx.rokegcode.psychologyapp.model.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,7 +8,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "USER")
-public class UserRoom implements Parcelable{ //TODO Los objetos van en el package de "data"
+public class UserRoom implements Parcelable{
     @PrimaryKey
     @ColumnInfo(name = "PK_USER")
     private int pk_user;

@@ -1,4 +1,4 @@
-package mx.rokegcode.psychologyapp.model;
+package mx.rokegcode.psychologyapp.model.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -8,7 +8,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "QUESTION")
-public class QuestionRoom implements Parcelable{ //TODO Los objetos van en el package de "data"
+public class QuestionRoom implements Parcelable{
     @PrimaryKey
     @ColumnInfo (name = "PK_QUESTION")
     private int pk_question;
@@ -16,7 +16,6 @@ public class QuestionRoom implements Parcelable{ //TODO Los objetos van en el pa
     private String question;
     @ColumnInfo (name = "ANSWER")
     private String answer;
-    private boolean expanded;
 
     public QuestionRoom(){
 
@@ -39,14 +38,6 @@ public class QuestionRoom implements Parcelable{ //TODO Los objetos van en el pa
             return new UserRoom[size];
         }
     };
-
-    public boolean isExpanded(){
-        return expanded;
-    }
-
-    public void setExpanded(boolean expanded) {
-        this.expanded = expanded;
-    }
 
     public int getPk_question() {
         return pk_question;

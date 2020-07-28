@@ -1,7 +1,5 @@
 package mx.rokegcode.psychologyapp.view.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +9,7 @@ import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
 import mx.rokegcode.psychologyapp.R;
-import mx.rokegcode.psychologyapp.model.UserRoom;
+import mx.rokegcode.psychologyapp.model.data.UserRoom;
 import mx.rokegcode.psychologyapp.presenter.callback.SplashCallback;
 import mx.rokegcode.psychologyapp.presenter.implementation.SplashPresenter;
 import mx.rokegcode.psychologyapp.view.dialog.SweetDialogs;

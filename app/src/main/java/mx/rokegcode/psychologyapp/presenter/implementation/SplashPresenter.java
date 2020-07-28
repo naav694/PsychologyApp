@@ -2,15 +2,13 @@ package mx.rokegcode.psychologyapp.presenter.implementation;
 
 import android.app.Activity;
 import android.content.Context;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import mx.rokegcode.psychologyapp.model.UserRoom;
+import mx.rokegcode.psychologyapp.model.data.UserRoom;
 import mx.rokegcode.psychologyapp.model.database.AppDatabase;
 import mx.rokegcode.psychologyapp.presenter.callback.SplashCallback;
 import mx.rokegcode.psychologyapp.support.InternetConnection;
