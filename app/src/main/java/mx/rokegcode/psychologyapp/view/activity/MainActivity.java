@@ -9,6 +9,7 @@ import java.util.zip.Inflater;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import mx.rokegcode.psychologyapp.R;
 import mx.rokegcode.psychologyapp.model.QuestionRoom;
 import mx.rokegcode.psychologyapp.model.UserRoom;
@@ -26,25 +27,25 @@ public class MainActivity extends BaseActivity implements MainCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initComponents();
-        initRecycler();
+        initRecycler(); //TODO Aqui deberia ir la consulta a las preguntas, usando el Presenter
     }
 
     /*
-    * This method is executed when the activity resumes
-    */
-    protected void onResume() {
+     * This method is executed when the activity resumes
+     */
+    protected void onResume() { //TODO Este para qué?
         super.onResume();
         //
-
     }
 
-    private void initComponents(){
+    private void initComponents() {
         recyclerViewQuestion = findViewById(R.id.lstQuestions);
     }
 
-    private void initRecycler(){
+    //TODO Se manda a llamar en el onSuccess()
+    private void initRecycler() {
         recyclerViewQuestion.setLayoutManager(new LinearLayoutManager(this));
-        questionAdapter = new QuestionAdapter(this,questionList);
+        questionAdapter = new QuestionAdapter(this, questionList); //TODO No es necesario pasarle el context, usa parent.context
         recyclerViewQuestion.setAdapter(questionAdapter);
     }
 

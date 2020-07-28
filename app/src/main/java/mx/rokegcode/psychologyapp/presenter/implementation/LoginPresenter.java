@@ -51,21 +51,24 @@ public class LoginPresenter extends BasePresenter{
                     }else{
                         callback.onError(result);
                     }
-                },trhowable ->{
+                }, trhowable -> {
                     callback.onError(trhowable.getMessage());
                 });
     }
 
+
+    //TODO Crea una clase UserRepository y ahi metes la logica para hacer llamado a Web y para Room
     public String checkExistingUser(String user, String password, int remember){
         String respuesta = "";
         List<UserRoom> users;
+        //TODO Para validar que haya credenciales recordadas usaremos SharedPreferences
         if(AppDatabase.getInstance(context).userDao().getUser(user.toUpperCase(),password.toUpperCase()) == 1){ //If the user exists in local database
             users = AppDatabase.getInstance(context).userDao().getUserData(user,password);
-            userRoom = users.get(0);
+            userRoom = users.get(0); //TODO Utiliza una clase como response por ejemplo: LoginResponse("respuesta", Usuario)
             respuesta = "main";
         }else{ //If the user don't exist in local database
             if(InternetConnection.isConnected(context)){ //If the phone has internet connection
-                try {
+                try { //TODO No es necesario utilizar un try/catch ya que en el codigo del RxJava cacha la Excepciones en subscribe() en la variable throwable
                     respuesta = getUserFromWebService(user,password,remember);
                 } catch (Exception e) {
                     respuesta = e.getMessage();
@@ -80,22 +83,25 @@ public class LoginPresenter extends BasePresenter{
     /*
     * This method retrieves the user if exist in the cloud
     */
+    //TODO Crea una clase UserRepository y ahi metes la logica para hacer llamado a Web y para Room
     private String getUserFromWebService(String user, String password, int remember) throws Exception{
         //The url of the server
         String respuesta = "";
-        try{
+        try{ //TODO Igual aqui no es necesario el try/catch
             respuesta = "Error al obtener el usuario: ";
             //String url ="https://sistemascoatepec.000webhostapp.com/ws/ws.php?accion=GetUser&user="+user+"&pass="+password;
             String url = "http://192.168.100.37/psychosystem-1/ws/ws.php?accion=GetUser&user='"+user+"'&pass='"+password+"'";
             RequestFuture<JSONObject> request = VolleyClient.getInstance().createRequest(context,url, Request.Method.GET, new JSONObject());
+            //TODO Manda el usuario y contraseña por post, creas el json y lo mandas :d
             JSONObject response = request.get();
             userRoom = new UserRoom();
-            JSONArray jsonArrayUser = response.getJSONArray("USER");
-            JSONObject jsonObjectUser = jsonArrayUser.getJSONObject(0);
-            userRoom.setPk_user(jsonObjectUser.getInt("PK_USUARIO"));
-            userRoom.setLogin(jsonObjectUser.getString("USUARIO"));
-            userRoom.setPassword(jsonObjectUser.getString("CONTRASENIA"));
-            userRoom.setFrequency(jsonObjectUser.getInt("FRECUENCIA"));
+            JSONArray jsonArrayUser = response.getJSONArray("USER"); //TODO Esto no, ya que lo que esperas es un JSONObject
+            //TODO JSONObject jsonUser = response.getJSONObject("USER");
+            JSONObject jsonObjectUser = jsonArrayUser.getJSONObject(0); //TODO Esto no
+            userRoom.setPk_user(jsonObjectUser.getInt("PK_USUARIO")); //TODO jsonUser
+            userRoom.setLogin(jsonObjectUser.getString("USUARIO")); //TODO jsonUser
+            userRoom.setPassword(jsonObjectUser.getString("CONTRASENIA")); //TODO jsonUser
+            userRoom.setFrequency(jsonObjectUser.getInt("FRECUENCIA")); //TODO jsonUser
             userRoom.setSaveUser(remember);
             //Save the user in local database
             respuesta = "Error al guardar el usuario en local: ";

@@ -8,7 +8,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "QUESTION")
-public class QuestionRoom implements Parcelable{
+public class QuestionRoom implements Parcelable{ //TODO Los objetos van en el package de "data"
     @PrimaryKey
     @ColumnInfo (name = "PK_QUESTION")
     private int pk_question;

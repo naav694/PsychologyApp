@@ -18,21 +18,21 @@ import mx.rokegcode.psychologyapp.model.QuestionRoom;
 
 public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHolder> implements View.OnClickListener {
 
-    LayoutInflater inflater;
+    LayoutInflater inflater; //TODO Esto no debe ir global
     List<QuestionRoom> model;
 
     //Listener
     private View.OnClickListener listener;
 
     public QuestionAdapter(Context context, List<QuestionRoom> model) {
-        this.inflater = LayoutInflater.from(context);
-        this.model = model;
+        this.inflater = LayoutInflater.from(context); //TODO No se debe poner esto en el constructor
+        this.model = model; //TODO questionList
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.list_question,parent,false);
+        View view = inflater.inflate(R.layout.list_question,parent,false); //TODO LayoutInflater.from(parent.context).inflate(R.layout.list_question, parent, false)
         view.setOnClickListener(this);
         return new ViewHolder(view);
     }
@@ -74,11 +74,12 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 
         public ViewHolder(@NonNull View itemView){
             super(itemView);
+            //TODO Aqui también podrías utilizar ButterKnife
             txtQuestion = itemView.findViewById(R.id.txtQuestion);
             expandableLayout = itemView.findViewById(R.id.expandableLayout);
             btnExpandir = itemView.findViewById(R.id.btnExpandir);
 
-            btnExpandir.setOnClickListener(view -> {
+            btnExpandir.setOnClickListener(view -> { //TODO Carga todas las preguntas desde un principio
                 QuestionRoom question = model.get(getAdapterPosition());
                 question.setExpanded(!question.isExpanded());
                 notifyItemChanged(getAdapterPosition());

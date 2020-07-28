@@ -43,7 +43,7 @@ public class LoginActivity extends BaseActivity implements LoginCallback {
                 //Execute the login
                 presenter.Login(txtUser.getText().toString(),txtPassword.getText().toString(),check);
             }else{ //if the user didn't put an user or password
-                SweetDialogs.sweetWarning(this,"Por favor llene los campos de texto");
+                SweetDialogs.sweetWarning(this,"Por favor llene los campos de texto"); //TODO Aqui falta el show()
             }
         }
     }
@@ -80,6 +80,7 @@ public class LoginActivity extends BaseActivity implements LoginCallback {
             case "main":
                 //Declaring the new intent
                 Intent main = new Intent(this,MainActivity.class);
+                //TODO Para lo del usuario, vamos a hacer una clase como para sesion con ayuda de SharedPreferences y GSON (libreria de terceros)
                 main.putExtra("user", user); //Sending retrieved user to the new activity
                 startActivity(main); //Start the new Activity
                 break;
