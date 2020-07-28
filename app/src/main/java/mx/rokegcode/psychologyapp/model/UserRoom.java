@@ -16,6 +16,8 @@ public class UserRoom implements Parcelable{
     private String login;
     @ColumnInfo(name = "PASSWORD")
     private String password;
+    @ColumnInfo(name = "FREQUENCY")
+    private int frequency;
     @ColumnInfo(name = "SAVE_USER")
     private int saveUser;
 
@@ -27,6 +29,7 @@ public class UserRoom implements Parcelable{
         pk_user = in.readInt();
         login = in.readString();
         password = in.readString();
+        frequency = in.readInt();
         saveUser = in.readInt();
     }
 
@@ -66,6 +69,10 @@ public class UserRoom implements Parcelable{
         this.password = password;
     }
 
+    public int getFrequency(){ return frequency;}
+
+    public void setFrequency(int frequency){ this.frequency = frequency;}
+
     public int getSaveUser() {
         return saveUser;
     }
@@ -84,6 +91,7 @@ public class UserRoom implements Parcelable{
         parcel.writeInt(pk_user);
         parcel.writeString(login);
         parcel.writeString(password);
+        parcel.writeInt(frequency);
         parcel.writeInt(saveUser);
     }
 }

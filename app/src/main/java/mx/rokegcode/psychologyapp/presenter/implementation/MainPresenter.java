@@ -8,6 +8,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import mx.rokegcode.psychologyapp.model.UserRoom;
+import mx.rokegcode.psychologyapp.model.database.AppDatabase;
 import mx.rokegcode.psychologyapp.presenter.callback.MainCallback;
 import mx.rokegcode.psychologyapp.support.InternetConnection;
 
@@ -22,20 +23,16 @@ public class MainPresenter extends BasePresenter{
     * This method search the survey(group of questions) for the respective user
     */
     public void Survey(UserRoom userRoom){
-        //Searching the user in the cloud and if couldn't find search in the local database
-        disposable = Observable.fromCallable(()-> InternetConnection.isConnected(context) ? getSurveyFromWebService(userRoom)  : getSurveyFromRoom(userRoom) )
+        //Searching the questions in the local database
+        /*disposable = Observable.fromCallable(()-> AppDatabase.getInstance(context).questionDao().getUserSurvey(userRoom.getPk_user()))
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(result -> callback.onLoading())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result ->{
-                    if(result.isEmpty()){
-                        callback.onSuccess(userRoom);
-                    }else{
-                        callback.onError(result);
-                    }
-                },trhowable ->{
-                    Toast.makeText(context, "hola", Toast.LENGTH_SHORT).show();
-                });
-
+                    callback.onSuccess(result);
+                },throwable -> {
+                    callback.onError(throwable.getMessage());
+                });*/
     }
+
 }

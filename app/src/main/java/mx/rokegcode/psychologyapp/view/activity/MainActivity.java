@@ -11,14 +11,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import mx.rokegcode.psychologyapp.R;
 import mx.rokegcode.psychologyapp.model.QuestionRoom;
+import mx.rokegcode.psychologyapp.model.UserRoom;
 import mx.rokegcode.psychologyapp.presenter.callback.MainCallback;
+import mx.rokegcode.psychologyapp.presenter.implementation.BasePresenter;
 import mx.rokegcode.psychologyapp.view.adapter.QuestionAdapter;
 
 public class MainActivity extends BaseActivity implements MainCallback {
     private QuestionAdapter questionAdapter;
     private RecyclerView recyclerViewQuestion;
     private List<QuestionRoom> questionList = new ArrayList<>();
-    private
 
 
     @Override
@@ -50,5 +51,20 @@ public class MainActivity extends BaseActivity implements MainCallback {
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_main;
+    }
+
+    @Override
+    public void onLoading() {
+
+    }
+
+    @Override
+    public void onError(String error) {
+
+    }
+
+    @Override
+    public void onSuccess(UserRoom user) {
+
     }
 }
