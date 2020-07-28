@@ -31,6 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/loginToolbar"/>
 
     <!-- Trata de no utilizar margenes grandes por los tamaños de pantalla -->
+    <!-- para los Strings, guardalos en string.xml y desde ahi llamalos-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutUser"
         android:layout_width="0dp"
