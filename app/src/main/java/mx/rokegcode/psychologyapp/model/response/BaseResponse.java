@@ -1,9 +1,9 @@
 package mx.rokegcode.psychologyapp.model.response;
 
-public class BaseResponse<T> {
+public abstract class BaseResponse<T> {
 
-    private String response;
-    private T data;
+    String response;
+    T data;
 
     public String getResponse() {
         return response;

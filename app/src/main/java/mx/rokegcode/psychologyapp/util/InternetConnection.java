@@ -1,4 +1,4 @@
-package mx.rokegcode.psychologyapp.support;
+package mx.rokegcode.psychologyapp.util;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

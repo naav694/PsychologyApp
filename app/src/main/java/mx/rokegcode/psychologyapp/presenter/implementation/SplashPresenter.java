@@ -11,7 +11,7 @@ import io.reactivex.schedulers.Schedulers;
 import mx.rokegcode.psychologyapp.model.data.UserRoom;
 import mx.rokegcode.psychologyapp.model.database.AppDatabase;
 import mx.rokegcode.psychologyapp.presenter.callback.SplashCallback;
-import mx.rokegcode.psychologyapp.support.InternetConnection;
+import mx.rokegcode.psychologyapp.util.InternetConnection;
 
 public class SplashPresenter extends BasePresenter {
     private SplashCallback callback;
@@ -23,6 +23,7 @@ public class SplashPresenter extends BasePresenter {
     }
 
     public void onStartApp(){
+
         disposable = Observable.fromCallable(this::login)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(result-> callback.onLoading())
@@ -50,10 +51,12 @@ public class SplashPresenter extends BasePresenter {
             return "main";
         }
     }
+
     private void uploadPendingSurveys(){
         if(InternetConnection.isConnected(context)){ //If the phone has connection
 
 
         }
     }
+
 }

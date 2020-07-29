@@ -6,11 +6,14 @@ import android.widget.CheckBox;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import mx.rokegcode.psychologyapp.R;
 import mx.rokegcode.psychologyapp.model.data.UserRoom;
+import mx.rokegcode.psychologyapp.model.response.LoginResponse;
 import mx.rokegcode.psychologyapp.presenter.callback.LoginCallback;
 import mx.rokegcode.psychologyapp.presenter.implementation.LoginPresenter;
 import mx.rokegcode.psychologyapp.view.dialog.SweetDialogs;
@@ -70,13 +73,12 @@ public class LoginActivity extends BaseActivity implements LoginCallback {
     * This method is executed if the login process is complete without errors
     */
     @Override
-    public void onSuccess(String result) {
-        switch(result){
+    public void onSuccess(LoginResponse loginResponse) {
+        switch(loginResponse.getResponse()){
             case "main":
                 //Declaring the new intent
                 Intent main = new Intent(this,MainActivity.class);
-                //TODO Para lo del usuario, vamos a hacer una clase como para sesion con ayuda de SharedPreferences y GSON (libreria de terceros)
-                //main.putExtra("user", user); //Sending retrieved user to the new activity
+                main.putParcelableArrayListExtra("questions", new ArrayList<>());
                 startActivity(main); //Start the new Activity
                 break;
         }

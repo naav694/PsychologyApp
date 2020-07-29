@@ -3,24 +3,11 @@ package mx.rokegcode.psychologyapp.presenter.implementation;
 import android.app.Activity;
 import android.content.Context;
 
-import com.android.volley.Request;
-import com.android.volley.toolbox.RequestFuture;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.List;
-
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import mx.rokegcode.psychologyapp.model.data.QuestionRoom;
-import mx.rokegcode.psychologyapp.model.data.UserRoom;
-import mx.rokegcode.psychologyapp.model.api.VolleyClient;
-import mx.rokegcode.psychologyapp.model.database.AppDatabase;
 import mx.rokegcode.psychologyapp.model.repository.UserRepository;
 import mx.rokegcode.psychologyapp.presenter.callback.LoginCallback;
-import mx.rokegcode.psychologyapp.support.InternetConnection;
 
 public class LoginPresenter extends BasePresenter{
     private LoginCallback callback;
@@ -41,7 +28,7 @@ public class LoginPresenter extends BasePresenter{
                 .doOnSubscribe(result -> callback.onLoading())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result ->{
-                    if(result.equals("main")){
+                    if(result.getResponse().equals("main")){
                         callback.onSuccess(result);
                     }else{
                         callback.onError(result);

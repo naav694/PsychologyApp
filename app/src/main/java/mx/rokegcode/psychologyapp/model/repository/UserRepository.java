@@ -1,6 +1,7 @@
 package mx.rokegcode.psychologyapp.model.repository;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.RequestFuture;
@@ -8,19 +9,39 @@ import com.android.volley.toolbox.RequestFuture;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mx.rokegcode.psychologyapp.model.api.VolleyClient;
 import mx.rokegcode.psychologyapp.model.data.QuestionRoom;
 import mx.rokegcode.psychologyapp.model.data.UserRoom;
 import mx.rokegcode.psychologyapp.model.database.AppDatabase;
-import mx.rokegcode.psychologyapp.support.InternetConnection;
+import mx.rokegcode.psychologyapp.model.response.LoginResponse;
+import mx.rokegcode.psychologyapp.util.InternetConnection;
+import mx.rokegcode.psychologyapp.util.SessionHelper;
 
 public class UserRepository {
+
     private UserRoom userRoom;
     private QuestionRoom questionRoom;
 
-    public String checkExistingUser(Context context,String user, String password, int remember) throws Exception{
+    public LoginResponse checkInternetConnection(Context context) {
+        if(InternetConnection.isConnected(context)) {
+            getUserFromWeb();
+        } else {
+            getUserFromRoom();
+        }
+    }
+
+    private LoginResponse getUserFromRoom() {
+
+    }
+
+    private LoginResponse getUserFromWeb() {
+
+    }
+
+    /*public LoginResponse checkExistingUser(Context context, String user, String password, int remember) throws Exception{
         String respuesta = "";
         List<UserRoom> users;
         //TODO Para validar que haya credenciales recordadas usaremos SharedPreferences
@@ -32,16 +53,16 @@ public class UserRepository {
             if(InternetConnection.isConnected(context)){ //If the phone has internet connection
                 respuesta = getUserFromWebService(context,user,password,remember);
             }else{ //If the phone doesn't have internet connection
-                respuesta =  "No se encuentra conectado a internet.";
+                respuesta =  "No se encuentra conectado a internet";
             }
         }
-        return respuesta;
-    }
+        return new LoginResponse(respuesta, userRoom, new ArrayList()); //
+    }*/
 
     /*
      * This method retrieves the user if exist in the cloud
      */
-    private String getUserFromWebService(Context context,String user, String password, int remember) throws Exception{
+    private LoginResponse getUserFromWebService(Context context, String user, String password, int remember) throws Exception{
         //The url of the server
         String respuesta = "";
         respuesta = "Error al obtener el usuario: ";
@@ -62,6 +83,8 @@ public class UserRepository {
         respuesta = "Error al guardar el usuario en local: ";
         AppDatabase.getInstance(context).userDao().insertUser(userRoom);
 
+        SessionHelper.getInstance().setUserSession(context, userRoom);
+
         //Retrieve the questions
         JSONArray jsonArraySurvey = response.getJSONArray("SURVEY");
         JSONObject jsonObjectSurvey;
@@ -70,8 +93,8 @@ public class UserRepository {
             questionRoom = new QuestionRoom();
             questionRoom.setPk_question(jsonObjectSurvey.getInt("PK_PREGUNTA"));
             questionRoom.setQuestion(jsonObjectSurvey.getString("TEXTO"));
-            //AppDatabase.getInstance(context).questionDao().
+            //AppDatabase.getInstance(context).questionDao().getUserSurvey();
         }
-        return respuesta;
+        return new LoginResponse("", new UserRoom(), new ArrayList<>());
     }
 }
