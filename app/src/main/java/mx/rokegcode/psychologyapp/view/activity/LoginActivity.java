@@ -2,6 +2,7 @@ package mx.rokegcode.psychologyapp.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.widget.CheckBox;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -37,7 +38,7 @@ public class LoginActivity extends BaseActivity implements LoginCallback {
     public void onBtnLoginPressed(){
         if(txtUser.getText() != null && txtPassword.getText() != null){ //If the fields arent empty
             if(!(txtUser.getText().toString().trim().isEmpty())){ //if both fields are filled
-                int check = checkUser.isChecked() ? 1: 0; //Send the value of the checked (checked 1 | unchecked 0)
+                boolean check = checkUser.isChecked(); //Send the value of the checked (checked 1 | unchecked 0)
                 //Execute the login
                 presenter.Login(txtUser.getText().toString(),txtPassword.getText().toString(),check);
             }else{ //if the user didn't put an user or password
@@ -63,10 +64,10 @@ public class LoginActivity extends BaseActivity implements LoginCallback {
      * this method is executed if the login process had an error
      */
     @Override
-    public void onError(String error) {
+    public void onError(LoginResponse error) {
         sweetProgress.dismiss();
         //Show the error message to the user
-        SweetDialogs.sweetError(this,error).show();
+        SweetDialogs.sweetError(this,error.getResponse()).show();
     }
 
     /*
@@ -74,13 +75,9 @@ public class LoginActivity extends BaseActivity implements LoginCallback {
     */
     @Override
     public void onSuccess(LoginResponse loginResponse) {
-        switch(loginResponse.getResponse()){
-            case "main":
-                //Declaring the new intent
-                Intent main = new Intent(this,MainActivity.class);
-                main.putParcelableArrayListExtra("questions", new ArrayList<>());
-                startActivity(main); //Start the new Activity
-                break;
-        }
+        //Declaring the new intent
+        Intent main = new Intent(this,MainActivity.class);
+        main.putParcelableArrayListExtra("questions", (ArrayList<? extends Parcelable>) loginResponse.getQuestionList());
+        startActivity(main); //Start the new Activity
     }
 }

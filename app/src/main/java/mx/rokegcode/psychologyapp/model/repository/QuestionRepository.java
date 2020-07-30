@@ -3,13 +3,12 @@ package mx.rokegcode.psychologyapp.model.repository;
 import android.content.Context;
 
 import mx.rokegcode.psychologyapp.model.data.QuestionRoom;
+import mx.rokegcode.psychologyapp.util.InternetConnection;
 
 public class QuestionRepository {
     private QuestionRoom questionRoom;
 
-    public String getSurvey(Context context) throws Exception{
-        String respuesta = "";
+    public void uploadPendingSurveys(){
 
-        return respuesta;
     }
 }

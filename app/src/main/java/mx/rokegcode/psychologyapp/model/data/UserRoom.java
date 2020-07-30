@@ -1,5 +1,6 @@
 package mx.rokegcode.psychologyapp.model.data;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -19,7 +20,7 @@ public class UserRoom implements Parcelable{
     @ColumnInfo(name = "FREQUENCY")
     private int frequency;
     @ColumnInfo(name = "SAVE_USER")
-    private int saveUser;
+    private boolean saveUser;
 
     public UserRoom(){
 
@@ -30,7 +31,9 @@ public class UserRoom implements Parcelable{
         login = in.readString();
         password = in.readString();
         frequency = in.readInt();
-        saveUser = in.readInt();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            saveUser = in.readBoolean();
+        }
     }
 
     public static final Creator<UserRoom> CREATOR = new Creator<UserRoom>() {
@@ -73,11 +76,11 @@ public class UserRoom implements Parcelable{
 
     public void setFrequency(int frequency){ this.frequency = frequency;}
 
-    public int getSaveUser() {
+    public boolean getSaveUser() {
         return saveUser;
     }
 
-    public void setSaveUser(int saveUser) {
+    public void setSaveUser(boolean saveUser) {
         this.saveUser = saveUser;
     }
 
@@ -92,6 +95,8 @@ public class UserRoom implements Parcelable{
         parcel.writeString(login);
         parcel.writeString(password);
         parcel.writeInt(frequency);
-        parcel.writeInt(saveUser);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            parcel.writeBoolean(saveUser);
+        }
     }
 }

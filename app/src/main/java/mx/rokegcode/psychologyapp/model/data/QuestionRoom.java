@@ -12,6 +12,8 @@ public class QuestionRoom implements Parcelable{
     @PrimaryKey
     @ColumnInfo (name = "PK_QUESTION")
     private int pk_question;
+    @ColumnInfo (name = "FK_USER")
+    private int fk_user;
     @ColumnInfo (name = "QUESTION")
     private String question;
     @ColumnInfo (name = "ANSWER")
@@ -23,6 +25,7 @@ public class QuestionRoom implements Parcelable{
 
     protected QuestionRoom(Parcel in){
         pk_question = in.readInt();
+        fk_user = in.readInt();
         question = in.readString();
         answer = in.readString();
     }
@@ -45,6 +48,14 @@ public class QuestionRoom implements Parcelable{
 
     public void setPk_question(int pk_question) {
         this.pk_question = pk_question;
+    }
+
+    public int getFk_user() {
+        return fk_user;
+    }
+
+    public void setFk_user(int pk_question) {
+        this.pk_question = fk_user;
     }
 
     public String getQuestion() {
@@ -75,6 +86,7 @@ public class QuestionRoom implements Parcelable{
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(pk_question);
+        parcel.writeInt(fk_user);
         parcel.writeString(question);
         parcel.writeString(answer);
     }

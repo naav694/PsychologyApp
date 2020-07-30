@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 import mx.rokegcode.psychologyapp.model.data.QuestionRoom;
 import mx.rokegcode.psychologyapp.model.data.UserRoom;
 
-@Database(entities = {UserRoom.class, QuestionRoom.class}, version =  2)
+@Database(entities = {UserRoom.class, QuestionRoom.class}, version =  1)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "PSYCHOLOGY";

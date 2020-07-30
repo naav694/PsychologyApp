@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".view.activity.SplashActivity" />
         <activity android:name=".view.activity.MainActivity"/>
+        <receiver android:name=".util.AlertReceiver"/>
     </application>
 
 </manifest>

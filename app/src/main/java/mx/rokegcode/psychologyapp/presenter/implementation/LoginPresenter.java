@@ -1,12 +1,16 @@
 package mx.rokegcode.psychologyapp.presenter.implementation;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.content.Context;
+
+import java.util.Calendar;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import mx.rokegcode.psychologyapp.model.repository.UserRepository;
+import mx.rokegcode.psychologyapp.model.response.LoginResponse;
 import mx.rokegcode.psychologyapp.presenter.callback.LoginCallback;
 
 public class LoginPresenter extends BasePresenter{
@@ -20,10 +24,10 @@ public class LoginPresenter extends BasePresenter{
     /*
     * This function is used for login to the aplication
     */
-    public void Login(String user, String password, int remember){
+    public void Login(String user, String password, boolean remember){
         UserRepository userRepository =  new UserRepository();
         //Searching the user in the cloud and if couldn't find search in the local database
-        disposable = Observable.fromCallable(()-> userRepository.checkExistingUser(context,user,password,remember) )
+        disposable = Observable.fromCallable(()-> userRepository.getUser(context,user,password,remember) )
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(result -> callback.onLoading())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -33,8 +37,6 @@ public class LoginPresenter extends BasePresenter{
                     }else{
                         callback.onError(result);
                     }
-                }, trhowable -> {
-                    callback.onError(trhowable.getMessage());
-                });
+                }, throwable -> callback.onError(new LoginResponse(throwable.getMessage(), null,null) ));
     }
 }

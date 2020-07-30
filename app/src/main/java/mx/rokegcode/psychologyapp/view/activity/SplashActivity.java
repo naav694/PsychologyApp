@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 import butterknife.BindView;
 import mx.rokegcode.psychologyapp.R;
 import mx.rokegcode.psychologyapp.model.data.UserRoom;
+import mx.rokegcode.psychologyapp.model.response.LoginResponse;
 import mx.rokegcode.psychologyapp.presenter.callback.SplashCallback;
 import mx.rokegcode.psychologyapp.presenter.implementation.SplashPresenter;
 import mx.rokegcode.psychologyapp.view.dialog.SweetDialogs;
@@ -35,14 +36,15 @@ public class SplashActivity extends BaseActivity implements SplashCallback {
     }
 
     @Override
-    public void onSuccess(String result, UserRoom user) {
-        switch(result){
+    public void onSuccess(LoginResponse result ) {
+        switch(result.getResponse()){
             case "login": //if we dont have user saved then open the login activity
                 startActivity(new Intent(this,LoginActivity.class));
                 break;
             case "main": //If we jave an user saved then open the main activity
                 Intent main = new Intent(this, MainActivity.class);
-                main.putExtra("user",user);
+                main.putExtra("user",result.getUserRoom());
+                //main.putExtra("survey",result.getQuestionList());
                 startActivity(main);
                 break;
         }
@@ -55,7 +57,7 @@ public class SplashActivity extends BaseActivity implements SplashCallback {
     }
 
     @Override
-    public void onError(String result) {
-        SweetDialogs.sweetError(this,result);
+    public void onError(LoginResponse error) {
+        SweetDialogs.sweetError(this,error.getResponse());
     }
 }
