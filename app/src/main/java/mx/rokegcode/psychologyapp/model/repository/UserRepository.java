@@ -73,8 +73,9 @@ public class UserRepository {
      */
     private LoginResponse getUserFromWebService(Context context, String user, String password, boolean remember) throws Exception{
         //The url of the server
-        //String url ="https://sistemascoatepec.000webhostapp.com/ws/ws.php?accion=GetUser&user="+user+"&pass="+password;
-        String url = "http://192.168.100.37/psychosystem-1/ws/ws.php?accion=GetUser&user='"+user+"'&pass='"+password+"'";
+        String url ="https://sistemascoatepec.000webhostapp.com/ws/ws.php?accion=GetUser&user="+user+"&pass="+password;
+        //String url = "http://192.168.100.37/psychosystem-1/ws/ws.php?accion=GetUser&user='"+user+"'&pass='"+password+
+        // "'";
         //Build the request
         RequestFuture<JSONObject> request = VolleyClient.getInstance().createRequest(context,url, Request.Method.GET, new JSONObject());
         JSONObject response = request.get(); //Retrieves the response
@@ -90,6 +91,7 @@ public class UserRepository {
         AppDatabase.getInstance(context).userDao().insertUser(userRoom);
         if(remember){ //If the user select the check
             SessionHelper.getInstance().setUserSession(context, userRoom); //Save the user in session
+            SessionHelper.getInstance().setRememberSession(context,remember); //Set remember in true
             Calendar c = Calendar.getInstance();
             c.set(Calendar.HOUR_OF_DAY, 01);
             c.set(Calendar.MINUTE, 20);
@@ -99,12 +101,12 @@ public class UserRepository {
         //Retrieve the questions
         JSONArray jsonArraySurvey = response.getJSONArray("SURVEY");
         JSONObject jsonObjectSurvey; //Initialize the json object
-        survey = null; //Initialize the array of questions
+        survey = new ArrayList<>(); //Initialize the array of questions
         for(int x = 0; x <= jsonArraySurvey.length()-1; x++){
             jsonObjectSurvey = jsonArraySurvey.getJSONObject(x); //Get the question into the json object
             questionRoom = new QuestionRoom(); //Create a new question room
             //Fill with the info retrievedc
-            questionRoom.setPk_question(jsonObjectSurvey.getInt("PK_PREGUNTA"));
+                questionRoom.setPk_question(jsonObjectSurvey.getInt("PK_PREGUNTA"));
             questionRoom.setFk_user(userRoom.getPk_user());
             questionRoom.setQuestion(jsonObjectSurvey.getString("TEXTO"));
             //Save the question in local database
@@ -116,7 +118,7 @@ public class UserRepository {
     }
 
     private LoginResponse getUserFromRoom(Context context, String user, String password, boolean remember) throws Exception{
-        userRoom = null; survey = null; //Initialize objects
+        userRoom = new UserRoom(); survey = new ArrayList<>();; //Initialize objects
         SessionHelper sessionHelper = new SessionHelper(); //Initialize session helper
         //Retrieve the user from local database
         userRoom = AppDatabase.getInstance(context).userDao().getUserData(user,password);
@@ -124,7 +126,6 @@ public class UserRepository {
         survey = AppDatabase.getInstance(context).questionDao().getUserSurvey(userRoom.getPk_user());
         if(remember){ //If the user select the check
             sessionHelper.setUserSession(context,userRoom); //Save the user in session
-
         }
         return new LoginResponse("main",userRoom,survey);
     }

@@ -18,7 +18,6 @@ import mx.rokegcode.psychologyapp.util.SessionHelper;
 
 public class SplashPresenter extends BasePresenter {
     private SplashCallback callback;
-    private UserRoom user;
 
     public SplashPresenter(Context context, SplashCallback callback, Activity activity) {
         super(context, activity);
