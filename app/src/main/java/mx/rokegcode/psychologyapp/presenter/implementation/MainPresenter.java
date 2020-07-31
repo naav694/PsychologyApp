@@ -24,7 +24,7 @@ public class MainPresenter extends BasePresenter{
     */
     public void GetSurvey(){
         QuestionRepository questionRepository = new QuestionRepository();
-        //Searching the questions in the local database
+        /*//Searching the questions in the local database
         disposable = Observable.fromCallable(()-> questionRepository.getSurvey(context))
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(result -> callback.onLoading())
@@ -33,7 +33,7 @@ public class MainPresenter extends BasePresenter{
                     callback.onSuccess(result);
                 },throwable -> {
                     callback.onError(throwable.getMessage());
-                });
+                });*/
     }
 
 }
