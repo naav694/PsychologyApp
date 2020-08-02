@@ -21,9 +21,12 @@ import mx.rokegcode.psychologyapp.view.dialog.SweetDialogs;
 
 public class LoginActivity extends BaseActivity implements LoginCallback {
 
-    @BindView(R.id.txtUser) TextInputEditText txtUser;
-    @BindView(R.id.txtPassword) TextInputEditText txtPassword;
-    @BindView(R.id.checkUser) CheckBox checkUser;
+    @BindView(R.id.txtUser)
+    TextInputEditText txtUser;
+    @BindView(R.id.txtPassword)
+    TextInputEditText txtPassword;
+    @BindView(R.id.checkUser)
+    CheckBox checkUser;
 
     private SweetAlertDialog sweetProgress;
     private LoginPresenter presenter;
@@ -31,22 +34,21 @@ public class LoginActivity extends BaseActivity implements LoginCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new LoginPresenter(this,this,this);
+        presenter = new LoginPresenter(this, this, this);
     }
 
     @OnClick({R.id.btnLogin})
-    public void onBtnLoginPressed(){
-        if(txtUser.getText() != null && txtPassword.getText() != null){ //If the fields arent empty
-            if(!(txtUser.getText().toString().trim().isEmpty())){ //if both fields are filled
+    public void onBtnLoginPressed() {
+        if (txtUser.getText() != null && txtPassword.getText() != null) { //If the fields arent empty
+            if (!(txtUser.getText().toString().trim().isEmpty())) { //if both fields are filled
                 boolean check = checkUser.isChecked(); //Send the value of the checked (checked 1 | unchecked 0)
                 //Execute the login
-                presenter.Login(txtUser.getText().toString(),txtPassword.getText().toString(),check);
-            }else{ //if the user didn't put an user or password
-                SweetDialogs.sweetWarning(this,"Por favor llene los campos de texto").show();
+                presenter.Login(txtUser.getText().toString(), txtPassword.getText().toString(), check);
+            } else { //if the user didn't put an user or password
+                SweetDialogs.sweetWarning(this, "Por favor llene los campos de texto").show();
             }
         }
     }
-
 
 
     @Override
@@ -56,7 +58,7 @@ public class LoginActivity extends BaseActivity implements LoginCallback {
 
     @Override
     public void onLoading() {
-        sweetProgress = SweetDialogs.sweetLoading(this,"Iniciando sesion");
+        sweetProgress = SweetDialogs.sweetLoading(this, "Iniciando sesion");
         sweetProgress.show();
     }
 
@@ -67,18 +69,18 @@ public class LoginActivity extends BaseActivity implements LoginCallback {
     public void onError(String error) {
         sweetProgress.dismiss();
         //Show the error message to the user
-        SweetDialogs.sweetError(this,error).show();
+        SweetDialogs.sweetError(this, error).show();
     }
 
     /*
-    * This method is executed if the login process is complete without errors
-    */
+     * This method is executed if the login process is complete without errors
+     */
     @Override
     public void onSuccess(LoginResponse result) {
         //Declaring the new intent
-        Intent main = new Intent(this,MainActivity.class);
-        main.putExtra("user",result.getUserRoom());
-        main.putParcelableArrayListExtra("questions", (ArrayList<? extends Parcelable>) result.getQuestionList());
+        Intent main = new Intent(this, MainActivity.class);
+        main.putExtra("user", result.getUserRoom());
+        main.putExtra("user", (Parcelable) result.getQuestionList());
         startActivity(main); //Start the new Activity
     }
 }

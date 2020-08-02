@@ -22,19 +22,24 @@ public class MainActivity extends BaseActivity implements MainCallback {
     private RecyclerView recyclerViewQuestion;
     private List<QuestionRoom> questionList = new ArrayList<>();
 
+    //@BindView(R.id.lstQuestions) RecyclerView recyclerViewQuestion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new MainPresenter(this,this,this);
         UserRoom user = new UserRoom();
         ArrayList<QuestionRoom> survey = new ArrayList<>();
-        //user = getIntent().getStringExtra("user");
-        questionList = getIntent().getParcelableArrayListExtra("survey");
-        //presenter.GetSurvey(this);
-        recyclerViewQuestion = findViewById(R.id.lstQuestions);
+        user = getIntent().getExtras().getParcelable("user");
+        survey = getIntent().getExtras().getParcelable("survey");
 
+        initRecyclerView(survey);
+    }
+
+    private void initRecyclerView(ArrayList<QuestionRoom> survey){
+        recyclerViewQuestion = findViewById(R.id.lstQuestions);
         recyclerViewQuestion.setLayoutManager(new LinearLayoutManager(this));
-        questionAdapter = new QuestionAdapter(questionList);
+        questionAdapter = new QuestionAdapter(survey);
         recyclerViewQuestion.setAdapter(questionAdapter);
     }
 
@@ -58,9 +63,7 @@ public class MainActivity extends BaseActivity implements MainCallback {
     public void onSuccess(String result) {
         switch(result){
             case "survey":
-                recyclerViewQuestion.setLayoutManager(new LinearLayoutManager(this));
-                questionAdapter = new QuestionAdapter(questionList);
-                recyclerViewQuestion.setAdapter(questionAdapter);
+
                 break;
         }
     }

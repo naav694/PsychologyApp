@@ -24,19 +24,19 @@ public class SplashPresenter extends BasePresenter {
         this.callback = callback;
     }
 
-    public void onStartApp(){
+    public void onStartApp() {
         UserRepository userRepository = new UserRepository();
-        disposable = Observable.fromCallable( () -> userRepository.start(context))
+        disposable = Observable.fromCallable(() -> userRepository.start(context))
                 .subscribeOn(Schedulers.io())
-                .doOnSubscribe(result-> callback.onLoading())
+                .doOnSubscribe(result -> callback.onLoading())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result ->{
-                    if(result.getResponse().equals("main") || result.getResponse().equals("login")){
+                .subscribe(result -> {
+                    if (result.getResponse().equals("main") || result.getResponse().equals("login")) {
                         callback.onSuccess(result);
-                    }else{
+                    } else {
                         callback.onError(result.getResponse());
                     }
-                    }, throwable-> callback.onError(throwable.getMessage()));
+                }, throwable -> callback.onError(throwable.getMessage()));
     }
 
 }
