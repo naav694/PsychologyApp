@@ -5,6 +5,6 @@ import mx.rokegcode.psychologyapp.model.response.LoginResponse;
 
 public interface LoginCallback {
     void onLoading();
-    void onError(LoginResponse error);
+    void onError(String error);
     void onSuccess(LoginResponse result);
 }

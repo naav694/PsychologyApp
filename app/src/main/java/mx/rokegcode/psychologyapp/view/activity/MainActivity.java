@@ -26,8 +26,16 @@ public class MainActivity extends BaseActivity implements MainCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new MainPresenter(this,this,this);
-        presenter.GetSurvey();
+        UserRoom user = new UserRoom();
+        ArrayList<QuestionRoom> survey = new ArrayList<>();
+        //user = getIntent().getStringExtra("user");
+        questionList = getIntent().getParcelableArrayListExtra("survey");
+        //presenter.GetSurvey(this);
         recyclerViewQuestion = findViewById(R.id.lstQuestions);
+
+        recyclerViewQuestion.setLayoutManager(new LinearLayoutManager(this));
+        questionAdapter = new QuestionAdapter(questionList);
+        recyclerViewQuestion.setAdapter(questionAdapter);
     }
 
 
@@ -48,7 +56,6 @@ public class MainActivity extends BaseActivity implements MainCallback {
 
     @Override
     public void onSuccess(String result) {
-
         switch(result){
             case "survey":
                 recyclerViewQuestion.setLayoutManager(new LinearLayoutManager(this));

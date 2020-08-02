@@ -1,8 +1,10 @@
 package mx.rokegcode.psychologyapp.model.data;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.RequiresApi;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -18,16 +20,22 @@ public class QuestionRoom implements Parcelable{
     private String question;
     @ColumnInfo (name = "ANSWER")
     private String answer;
+    @ColumnInfo (name="SENT")
+    private boolean sent;
 
     public QuestionRoom(){
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     protected QuestionRoom(Parcel in){
         pk_question = in.readInt();
         fk_user = in.readInt();
         question = in.readString();
         answer = in.readString();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            sent = in.readBoolean();
+        }
     }
 
     public static final Parcelable.Creator<UserRoom> CREATOR = new Parcelable.Creator<UserRoom>() {
@@ -76,6 +84,14 @@ public class QuestionRoom implements Parcelable{
 
     public static Creator<UserRoom> getCREATOR() {
         return CREATOR;
+    }
+
+    public boolean getSent() {
+        return sent;
+    }
+
+    public void setSent(boolean sent) {
+        this.sent = sent;
     }
 
     @Override

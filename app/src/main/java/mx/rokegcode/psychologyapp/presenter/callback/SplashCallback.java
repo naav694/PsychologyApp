@@ -6,5 +6,5 @@ import mx.rokegcode.psychologyapp.model.response.LoginResponse;
 public interface SplashCallback {
     void onSuccess(LoginResponse result);
     void onLoading();
-    void onError(LoginResponse error);
+    void onError(String error);
 }

@@ -34,9 +34,9 @@ public class SplashPresenter extends BasePresenter {
                     if(result.getResponse().equals("main") || result.getResponse().equals("login")){
                         callback.onSuccess(result);
                     }else{
-                        callback.onError(result);
+                        callback.onError(result.getResponse());
                     }
-                    }, throwable-> callback.onError(new LoginResponse(throwable.getMessage(), null,null)));
+                    }, throwable-> callback.onError(throwable.getMessage()));
     }
 
 }

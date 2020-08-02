@@ -10,6 +10,7 @@ import mx.rokegcode.psychologyapp.model.data.UserRoom;
 import mx.rokegcode.psychologyapp.model.database.AppDatabase;
 import mx.rokegcode.psychologyapp.model.repository.QuestionRepository;
 import mx.rokegcode.psychologyapp.presenter.callback.MainCallback;
+import mx.rokegcode.psychologyapp.util.SessionHelper;
 
 public class MainPresenter extends BasePresenter{
     private MainCallback callback;
@@ -22,10 +23,11 @@ public class MainPresenter extends BasePresenter{
     /*
     * This method search the survey(group of questions) for the respective user
     */
-    public void GetSurvey(){
+    public void GetSurvey(Context context){
+
         QuestionRepository questionRepository = new QuestionRepository();
-        /*//Searching the questions in the local database
-        disposable = Observable.fromCallable(()-> questionRepository.getSurvey(context))
+        //Searching the questions in the local database
+        /*disposable = Observable.fromCallable(()-> questionRepository.getSurvey(context))
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(result -> callback.onLoading())
                 .observeOn(AndroidSchedulers.mainThread())

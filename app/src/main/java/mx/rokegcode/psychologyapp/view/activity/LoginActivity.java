@@ -64,20 +64,21 @@ public class LoginActivity extends BaseActivity implements LoginCallback {
      * this method is executed if the login process had an error
      */
     @Override
-    public void onError(LoginResponse error) {
+    public void onError(String error) {
         sweetProgress.dismiss();
         //Show the error message to the user
-        SweetDialogs.sweetError(this,error.getResponse()).show();
+        SweetDialogs.sweetError(this,error).show();
     }
 
     /*
     * This method is executed if the login process is complete without errors
     */
     @Override
-    public void onSuccess(LoginResponse loginResponse) {
+    public void onSuccess(LoginResponse result) {
         //Declaring the new intent
         Intent main = new Intent(this,MainActivity.class);
-        main.putParcelableArrayListExtra("questions", (ArrayList<? extends Parcelable>) loginResponse.getQuestionList());
+        main.putExtra("user",result.getUserRoom());
+        main.putParcelableArrayListExtra("questions", (ArrayList<? extends Parcelable>) result.getQuestionList());
         startActivity(main); //Start the new Activity
     }
 }

@@ -2,10 +2,13 @@ package mx.rokegcode.psychologyapp.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import mx.rokegcode.psychologyapp.R;
@@ -44,7 +47,7 @@ public class SplashActivity extends BaseActivity implements SplashCallback {
             case "main": //If we jave an user saved then open the main activity
                 Intent main = new Intent(this, MainActivity.class);
                 main.putExtra("user",result.getUserRoom());
-                //main.putExtra("survey",result.getQuestionList());
+                main.putParcelableArrayListExtra("questions", (ArrayList<? extends Parcelable>) result.getQuestionList());
                 startActivity(main);
                 break;
         }
@@ -52,12 +55,12 @@ public class SplashActivity extends BaseActivity implements SplashCallback {
 
     @Override
     public void onLoading() {
-        Glide.with(this).load(R.drawable.warning_sigh).into(imageSplash);
+        Glide.with(this).load(R.drawable.logo).into(imageSplash);
         imageSplash.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onError(LoginResponse error) {
-        SweetDialogs.sweetError(this,error.getResponse());
+    public void onError(String error) {
+        SweetDialogs.sweetError(this,error);
     }
 }

@@ -74,8 +74,6 @@ public class UserRepository {
     private LoginResponse getUserFromWebService(Context context, String user, String password, boolean remember) throws Exception{
         //The url of the server
         String url ="https://sistemascoatepec.000webhostapp.com/ws/ws.php?accion=GetUser&user="+user+"&pass="+password;
-        //String url = "http://192.168.100.37/psychosystem-1/ws/ws.php?accion=GetUser&user='"+user+"'&pass='"+password+
-        // "'";
         //Build the request
         RequestFuture<JSONObject> request = VolleyClient.getInstance().createRequest(context,url, Request.Method.GET, new JSONObject());
         JSONObject response = request.get(); //Retrieves the response
@@ -126,6 +124,7 @@ public class UserRepository {
         survey = AppDatabase.getInstance(context).questionDao().getUserSurvey(userRoom.getPk_user());
         if(remember){ //If the user select the check
             sessionHelper.setUserSession(context,userRoom); //Save the user in session
+            SessionHelper.getInstance().setRememberSession(context,remember); //Set remember in true
         }
         return new LoginResponse("main",userRoom,survey);
     }
@@ -134,7 +133,6 @@ public class UserRepository {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlertReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context,1,intent,0);
-
         alarmManager.setExact(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(), pendingIntent);
     }
 
@@ -142,7 +140,6 @@ public class UserRepository {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlertReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context,1,intent,0);
-
         alarmManager.cancel(pendingIntent);
     }
 }
