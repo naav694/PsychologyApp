@@ -20,33 +20,44 @@ public class QuestionRoom implements Parcelable{
     private String question;
     @ColumnInfo (name = "ANSWER")
     private String answer;
-    @ColumnInfo (name="SENT")
-    private boolean sent;
+    @ColumnInfo (name="SENT_STATUS")
+    private String sentStatus; // E: Enviado, N: No enviado
 
     public QuestionRoom(){
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.Q)
-    protected QuestionRoom(Parcel in){
+    protected QuestionRoom(Parcel in) {
         pk_question = in.readInt();
         fk_user = in.readInt();
         question = in.readString();
         answer = in.readString();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            sent = in.readBoolean();
-        }
+        sentStatus = in.readString();
     }
 
-    public static final Parcelable.Creator<UserRoom> CREATOR = new Parcelable.Creator<UserRoom>() {
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(pk_question);
+        dest.writeInt(fk_user);
+        dest.writeString(question);
+        dest.writeString(answer);
+        dest.writeString(sentStatus);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<QuestionRoom> CREATOR = new Creator<QuestionRoom>() {
         @Override
-        public UserRoom createFromParcel(Parcel in) {
-            return new UserRoom(in);
+        public QuestionRoom createFromParcel(Parcel in) {
+            return new QuestionRoom(in);
         }
 
         @Override
-        public UserRoom[] newArray(int size) {
-            return new UserRoom[size];
+        public QuestionRoom[] newArray(int size) {
+            return new QuestionRoom[size];
         }
     };
 
@@ -62,8 +73,8 @@ public class QuestionRoom implements Parcelable{
         return fk_user;
     }
 
-    public void setFk_user(int pk_question) {
-        this.pk_question = fk_user;
+    public void setFk_user(int fk_user) {
+        this.fk_user = fk_user;
     }
 
     public String getQuestion() {
@@ -82,28 +93,11 @@ public class QuestionRoom implements Parcelable{
         this.answer = answer;
     }
 
-    public static Creator<UserRoom> getCREATOR() {
-        return CREATOR;
+    public String getSentStatus() {
+        return sentStatus;
     }
 
-    public boolean getSent() {
-        return sent;
-    }
-
-    public void setSent(boolean sent) {
-        this.sent = sent;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(pk_question);
-        parcel.writeInt(fk_user);
-        parcel.writeString(question);
-        parcel.writeString(answer);
+    public void setSentStatus(String sentStatus) {
+        this.sentStatus = sentStatus;
     }
 }

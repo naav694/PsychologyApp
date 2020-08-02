@@ -1,6 +1,6 @@
 package mx.rokegcode.psychologyapp.model.response;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import mx.rokegcode.psychologyapp.model.data.QuestionRoom;
 import mx.rokegcode.psychologyapp.model.data.UserRoom;
@@ -9,9 +9,9 @@ public class LoginResponse {
 
     private String response;
     private UserRoom userRoom;
-    private List<QuestionRoom> questionList;
+    private ArrayList<QuestionRoom> questionList;
 
-    public LoginResponse(String response, UserRoom userRoom, List<QuestionRoom> questionList) {
+    public LoginResponse(String response, UserRoom userRoom, ArrayList<QuestionRoom> questionList) {
         this.response = response;
         this.userRoom = userRoom;
         this.questionList = questionList;
@@ -34,11 +34,11 @@ public class LoginResponse {
         this.userRoom = userRoom;
     }
 
-    public List<QuestionRoom> getQuestionList() {
+    public ArrayList<QuestionRoom> getQuestionList() {
         return questionList;
     }
 
-    public void setQuestionList(List<QuestionRoom> questionList) {
+    public void setQuestionList(ArrayList<QuestionRoom> questionList) {
         this.questionList = questionList;
     }
 }

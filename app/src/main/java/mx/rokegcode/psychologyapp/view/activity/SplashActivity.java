@@ -46,8 +46,8 @@ public class SplashActivity extends BaseActivity implements SplashCallback {
                 break;
             case "main": //If we jave an user saved then open the main activity
                 Intent main = new Intent(this, MainActivity.class);
-                main.putExtra("user",result.getUserRoom());
-                main.putParcelableArrayListExtra("questions", (ArrayList<? extends Parcelable>) result.getQuestionList());
+                main.putExtra("user",result.getUserRoom()); //TODO ESTO YA NO LO PASES, porque lo tienes en el sharedpreferences
+                main.putParcelableArrayListExtra("questions", result.getQuestionList());
                 startActivity(main);
                 break;
         }

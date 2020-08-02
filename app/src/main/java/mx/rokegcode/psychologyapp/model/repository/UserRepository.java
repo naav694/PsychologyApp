@@ -43,10 +43,10 @@ public class UserRepository {
                 QuestionRepository questionRepository = new QuestionRepository();
                 questionRepository.uploadPendingSurveys();
                 //send to main acitivity
-                return new LoginResponse("main", userRoom, survey);
+                return new LoginResponse("main", userRoom, new ArrayList<>(survey));
             } else { //If the phone doesn't have internet connection
                 //send to main activity
-                return new LoginResponse("main", userRoom, survey);
+                return new LoginResponse("main", userRoom, new ArrayList<>(survey));
             }
         } else { //Is there is not users in session
             //Send to login activity
@@ -77,25 +77,19 @@ public class UserRepository {
         userRoom = AppDatabase.getInstance(context).userDao().getUserData(user, password);
         //Retrieve the survey from local database
         survey = AppDatabase.getInstance(context).questionDao().getUserSurvey(userRoom.getPk_user());
-        if (remember) { //If the user select the check
-            sessionHelper.setUserSession(context, userRoom); //Save the user in session
-            SessionHelper.getInstance().setRememberSession(context, remember); //Set remember in true
-        }
-        return new LoginResponse("main", userRoom, survey);
+        SessionHelper.getInstance().setRememberSession(context, remember); //Set remember in true
+        sessionHelper.setUserSession(context, userRoom); //Save the user in session
+        return new LoginResponse("main", userRoom, new ArrayList<>(survey));
     }
 
     /*
      * This method retrieves the user if exist in the cloud
      */
     private LoginResponse getUserFromWebService(Context context, String user, String password, boolean remember) throws Exception {
-        //Create json to send the user and password to the web service
-        JSONObject userpost = new JSONObject();
-        userpost.put("user",user);
-        userpost.put("password",password);
         //The url of the server
         String url = "https://sistemascoatepec.000webhostapp.com/ws/ws.php?accion=GetUser";
         //Build the request
-        RequestFuture<JSONObject> request = VolleyClient.getInstance().createRequest(context, url, Request.Method.POST, userpost);
+        RequestFuture<JSONObject> request = VolleyClient.getInstance().createRequest(context, url, Request.Method.POST, createUserJSON(user, password));
         JSONObject response = request.get(); //Retrieves the response
         userRoom = new UserRoom(); //Create a new user room
         //Fill the user with the info retrieved
@@ -111,7 +105,7 @@ public class UserRepository {
             SessionHelper.getInstance().setUserSession(context, userRoom); //Save the user in session
             SessionHelper.getInstance().setRememberSession(context, remember); //Set remember in true
             Calendar c = Calendar.getInstance();
-            c.set(Calendar.HOUR_OF_DAY, 01);
+            c.set(Calendar.HOUR_OF_DAY, 1);
             c.set(Calendar.MINUTE, 20);
             c.set(Calendar.SECOND, 0);
             startAlarm(context, c);
@@ -132,7 +126,14 @@ public class UserRepository {
             //Add the question in the array
             survey.add(questionRoom);
         }
-        return new LoginResponse("main", userRoom, survey);
+        return new LoginResponse("main", userRoom, new ArrayList<>(survey));
+    }
+
+    private JSONObject createUserJSON(String user, String password) throws Exception {
+        JSONObject userJSON = new JSONObject();
+        userJSON.put("user", user);
+        userJSON.put("password", password);
+        return userJSON;
     }
 
     private void startAlarm(Context context, Calendar c) {

@@ -79,8 +79,8 @@ public class LoginActivity extends BaseActivity implements LoginCallback {
     public void onSuccess(LoginResponse result) {
         //Declaring the new intent
         Intent main = new Intent(this, MainActivity.class);
-        main.putExtra("user", result.getUserRoom());
-        main.putExtra("user", (Parcelable) result.getQuestionList());
+        main.putExtra("user", result.getUserRoom()); //TODO ESTO YA
+        main.putParcelableArrayListExtra("user", result.getQuestionList());
         startActivity(main); //Start the new Activity
     }
 }
