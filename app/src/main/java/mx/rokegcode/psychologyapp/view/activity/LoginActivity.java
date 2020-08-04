@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -79,8 +80,8 @@ public class LoginActivity extends BaseActivity implements LoginCallback {
     public void onSuccess(LoginResponse result) {
         //Declaring the new intent
         Intent main = new Intent(this, MainActivity.class);
-        main.putExtra("user", result.getUserRoom()); //TODO ESTO YA
-        main.putParcelableArrayListExtra("user", result.getQuestionList());
+        main.putExtra("user", result.getUserRoom());
+        main.putParcelableArrayListExtra("survey", result.getQuestionList());
         startActivity(main); //Start the new Activity
     }
 }

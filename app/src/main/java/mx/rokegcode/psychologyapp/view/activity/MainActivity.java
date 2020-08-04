@@ -1,6 +1,7 @@
 package mx.rokegcode.psychologyapp.view.activity;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,8 @@ public class MainActivity extends BaseActivity implements MainCallback {
     private MainPresenter presenter;
     private QuestionAdapter questionAdapter;
     private RecyclerView recyclerViewQuestion;
-    private List<QuestionRoom> questionList = new ArrayList<>();
+    private ArrayList<QuestionRoom> survey = null;
+    private UserRoom user = null;
 
     //@BindView(R.id.lstQuestions) RecyclerView recyclerViewQuestion;
 
@@ -28,12 +30,11 @@ public class MainActivity extends BaseActivity implements MainCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new MainPresenter(this,this,this);
-        UserRoom user = new UserRoom();
-        ArrayList<QuestionRoom> survey = new ArrayList<>();
         user = getIntent().getExtras().getParcelable("user");
-        survey = getIntent().getExtras().getParcelable("survey");
+        survey = getIntent().getExtras().getParcelableArrayList("survey");
+        Toast.makeText(this, survey.size(), Toast.LENGTH_SHORT).show();
 
-        initRecyclerView(survey);
+        //initRecyclerView(survey);
     }
 
     private void initRecyclerView(ArrayList<QuestionRoom> survey){

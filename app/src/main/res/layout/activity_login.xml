@@ -18,17 +18,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Trata de no utilizar margenes grandes por los tamaños de pantalla -->
-    <ImageView
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view"
         android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginToolbar"/>
+        android:layout_height="0dp"
+        android:layout_marginTop="90dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.4"
+        app:layout_constraintTop_toBottomOf="@+id/loginToolbar"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="false"
+        app:lottie_rawRes="@raw/user" />
 
     <!-- Trata de no utilizar margenes grandes por los tamaños de pantalla -->
     <!-- para los Strings, guardalos en string.xml y desde ahi llamalos-->

@@ -51,6 +51,8 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.1'
     //Gson
     implementation 'com.google.code.gson:gson:2.8.6'
+    //lottie
+    implementation 'com.airbnb.android:lottie:3.4.0'
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

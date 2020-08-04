@@ -86,47 +86,55 @@ public class UserRepository {
      * This method retrieves the user if exist in the cloud
      */
     private LoginResponse getUserFromWebService(Context context, String user, String password, boolean remember) throws Exception {
+        LoginResponse respuesta = new LoginResponse(null,null,null);
         //The url of the server
         String url = "https://sistemascoatepec.000webhostapp.com/ws/ws.php?accion=GetUser";
         //Build the request
         RequestFuture<JSONObject> request = VolleyClient.getInstance().createRequest(context, url, Request.Method.POST, createUserJSON(user, password));
         JSONObject response = request.get(); //Retrieves the response
-        userRoom = new UserRoom(); //Create a new user room
-        //Fill the user with the info retrieved
-        JSONObject jsonUser = response.getJSONObject("USER");
-        userRoom.setPk_user(jsonUser.getInt("PK_USUARIO"));
-        userRoom.setLogin(jsonUser.getString("USUARIO"));
-        userRoom.setPassword(jsonUser.getString("CONTRASENIA"));
-        userRoom.setFrequency(jsonUser.getInt("FRECUENCIA"));
-        userRoom.setSaveUser(remember);
-        //Save the user in local database
-        AppDatabase.getInstance(context).userDao().insertUser(userRoom);
-        if (remember) { //If the user select the check
-            SessionHelper.getInstance().setUserSession(context, userRoom); //Save the user in session
-            SessionHelper.getInstance().setRememberSession(context, remember); //Set remember in true
-            Calendar c = Calendar.getInstance();
-            c.set(Calendar.HOUR_OF_DAY, 1);
-            c.set(Calendar.MINUTE, 20);
-            c.set(Calendar.SECOND, 0);
-            startAlarm(context, c);
+        if(response.getString("RESPUESTA").equals("OK")){ //If the webservice retrieves an user
+            userRoom = new UserRoom(); //Create a new user room
+            //Fill the user with the info retrieved
+            JSONObject jsonUser = response.getJSONObject("USER");
+            userRoom.setPk_user(jsonUser.getInt("PK_USUARIO"));
+            userRoom.setLogin(jsonUser.getString("USUARIO"));
+            userRoom.setPassword(jsonUser.getString("CONTRASENIA"));
+            userRoom.setFrequency(jsonUser.getInt("FRECUENCIA"));
+            userRoom.setSaveUser(remember);
+            //Save the user in local database
+            AppDatabase.getInstance(context).userDao().insertUser(userRoom);
+            if (remember) { //If the user select the check
+                SessionHelper.getInstance().setUserSession(context, userRoom); //Save the user in session
+                SessionHelper.getInstance().setRememberSession(context, remember); //Set remember in true
+                Calendar c = Calendar.getInstance();
+                c.set(Calendar.HOUR_OF_DAY, 1);
+                c.set(Calendar.MINUTE, 20);
+                c.set(Calendar.SECOND, 0);
+                startAlarm(context, c);
+            }
+            //Retrieve the questions
+            JSONArray jsonArraySurvey = response.getJSONArray("SURVEY");
+            JSONObject jsonObjectSurvey; //Initialize the json object
+            survey = new ArrayList<>(); //Initialize the array of questions
+            for (int x = 0; x <= jsonArraySurvey.length() - 1; x++) {
+                jsonObjectSurvey = jsonArraySurvey.getJSONObject(x); //Get the question into the json object
+                questionRoom = new QuestionRoom(); //Create a new question room
+                //Fill with the info retrievedc
+                questionRoom.setPk_question(jsonObjectSurvey.getInt("PK_PREGUNTA"));
+                questionRoom.setFk_user(userRoom.getPk_user());
+                questionRoom.setQuestion(jsonObjectSurvey.getString("TEXTO"));
+                //Save the question in local database
+                AppDatabase.getInstance(context).questionDao().insertQuestion(questionRoom);
+                //Add the question in the array
+                survey.add(questionRoom);
+                respuesta.setResponse("main");
+                respuesta.setUserRoom(userRoom);
+                respuesta.setQuestionList(new ArrayList<>(survey));
+            }
+        }else{ //If the webservice dont retrieve an user
+            respuesta.setResponse(response.getString("MENSAJE"));
         }
-        //Retrieve the questions
-        JSONArray jsonArraySurvey = response.getJSONArray("SURVEY");
-        JSONObject jsonObjectSurvey; //Initialize the json object
-        survey = new ArrayList<>(); //Initialize the array of questions
-        for (int x = 0; x <= jsonArraySurvey.length() - 1; x++) {
-            jsonObjectSurvey = jsonArraySurvey.getJSONObject(x); //Get the question into the json object
-            questionRoom = new QuestionRoom(); //Create a new question room
-            //Fill with the info retrievedc
-            questionRoom.setPk_question(jsonObjectSurvey.getInt("PK_PREGUNTA"));
-            questionRoom.setFk_user(userRoom.getPk_user());
-            questionRoom.setQuestion(jsonObjectSurvey.getString("TEXTO"));
-            //Save the question in local database
-            AppDatabase.getInstance(context).questionDao().insertQuestion(questionRoom);
-            //Add the question in the array
-            survey.add(questionRoom);
-        }
-        return new LoginResponse("main", userRoom, new ArrayList<>(survey));
+        return respuesta;
     }
 
     private JSONObject createUserJSON(String user, String password) throws Exception {

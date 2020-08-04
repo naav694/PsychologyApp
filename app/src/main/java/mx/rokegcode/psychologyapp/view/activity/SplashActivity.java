@@ -55,8 +55,6 @@ public class SplashActivity extends BaseActivity implements SplashCallback {
 
     @Override
     public void onLoading() {
-        Glide.with(this).load(R.drawable.logo).into(imageSplash);
-        imageSplash.setVisibility(View.VISIBLE);
     }
 
     @Override
