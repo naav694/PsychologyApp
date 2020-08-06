@@ -18,10 +18,6 @@ public class QuestionRoom implements Parcelable{
     private int fk_user;
     @ColumnInfo (name = "QUESTION")
     private String question;
-    @ColumnInfo (name = "ANSWER")
-    private String answer;
-    @ColumnInfo (name="SENT_STATUS")
-    private String sentStatus; // E: Enviado, N: No enviado
 
     public QuestionRoom(){
 
@@ -31,8 +27,6 @@ public class QuestionRoom implements Parcelable{
         pk_question = in.readInt();
         fk_user = in.readInt();
         question = in.readString();
-        answer = in.readString();
-        sentStatus = in.readString();
     }
 
     @Override
@@ -40,8 +34,6 @@ public class QuestionRoom implements Parcelable{
         dest.writeInt(pk_question);
         dest.writeInt(fk_user);
         dest.writeString(question);
-        dest.writeString(answer);
-        dest.writeString(sentStatus);
     }
 
     @Override
@@ -83,21 +75,5 @@ public class QuestionRoom implements Parcelable{
 
     public void setQuestion(String question) {
         this.question = question;
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
-
-    public String getSentStatus() {
-        return sentStatus;
-    }
-
-    public void setSentStatus(String sentStatus) {
-        this.sentStatus = sentStatus;
     }
 }

@@ -8,14 +8,17 @@
     app:cardCornerRadius="3dp"
     app:cardElevation="3dp"
     app:cardUseCompatPadding="true">
-    <TextView
-        android:id="@+id/txtQuestion"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:hint="Pregunta"/>
-    <EditText
-        android:id="@+id/txtAnswer"
-        android:layout_height="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutQuestion"
         android:layout_width="match_parent"
-        android:singleLine="false"/>
+        android:layout_height="wrap_content">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtAnswer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Respuesta"
+            android:maxLines="5"
+            android:singleLine="false"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
 </androidx.cardview.widget.CardView>

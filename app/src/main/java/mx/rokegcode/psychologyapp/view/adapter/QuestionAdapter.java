@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -18,11 +20,8 @@ import butterknife.BindView;
 import mx.rokegcode.psychologyapp.R;
 import mx.rokegcode.psychologyapp.model.data.QuestionRoom;
 
-public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHolder> implements View.OnClickListener {
+public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHolder> {
     List<QuestionRoom> questionList;
-
-    //Listener
-    private View.OnClickListener listener;
 
     public QuestionAdapter(List<QuestionRoom> questionList) {
         this.questionList = questionList;
@@ -31,30 +30,19 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_question,parent,false);
-        view.setOnClickListener(this);
-        return new ViewHolder(view);
-    }
-
-    public void setOnClickListener(View.OnClickListener listener){
-        this.listener = listener;
+        return new ViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_question,parent,false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.txtQuestion.setText(questionList.get(position).getQuestion());
+        //TODO AQUI MERENGUES Y ESQUE YO RECUERDO QUE SE LE MANDABA EL MODELO EN EL CONSTRUCTOR :C
+        holder.txtAnswer.setHint("holi"+position);
     }
 
     @Override
     public int getItemCount() {
         return questionList.size();
-    }
-
-    @Override
-    public void onClick(View view) {
-        if(listener!= null){
-            listener.onClick(view);
-        }
     }
 
     public void refreshInfo(List<QuestionRoom> model){
@@ -63,8 +51,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.txtQuestion) TextView txtQuestion;
-        @BindView(R.id.txtAnswer) EditText getTxtAnswer;
+        @BindView(R.id.txtAnswer) TextInputEditText txtAnswer;
 
         public ViewHolder(@NonNull View itemView){
             super(itemView);

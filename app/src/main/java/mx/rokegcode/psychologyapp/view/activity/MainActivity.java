@@ -32,9 +32,8 @@ public class MainActivity extends BaseActivity implements MainCallback {
         presenter = new MainPresenter(this,this,this);
         user = getIntent().getExtras().getParcelable("user");
         survey = getIntent().getExtras().getParcelableArrayList("survey");
-        Toast.makeText(this, survey.size(), Toast.LENGTH_SHORT).show();
 
-        //initRecyclerView(survey);
+        initRecyclerView(survey);
     }
 
     private void initRecyclerView(ArrayList<QuestionRoom> survey){
