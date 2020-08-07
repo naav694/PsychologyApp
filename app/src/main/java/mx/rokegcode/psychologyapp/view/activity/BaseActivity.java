@@ -9,7 +9,6 @@ import androidx.appcompat.widget.Toolbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import mx.rokegcode.psychologyapp.R;
-import mx.rokegcode.psychologyapp.presenter.implementation.BasePresenter;
 
 public abstract class BaseActivity extends AppCompatActivity {
 

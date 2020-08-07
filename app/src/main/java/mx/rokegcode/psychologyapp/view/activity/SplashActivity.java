@@ -2,17 +2,13 @@ package mx.rokegcode.psychologyapp.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.view.View;
 import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import mx.rokegcode.psychologyapp.R;
-import mx.rokegcode.psychologyapp.model.data.UserRoom;
+import mx.rokegcode.psychologyapp.model.data.Question;
 import mx.rokegcode.psychologyapp.model.response.LoginResponse;
 import mx.rokegcode.psychologyapp.presenter.callback.SplashCallback;
 import mx.rokegcode.psychologyapp.presenter.implementation.SplashPresenter;
@@ -29,7 +25,7 @@ public class SplashActivity extends BaseActivity implements SplashCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        presenter = new SplashPresenter(this,this,this);
+        presenter = new SplashPresenter(this, this, this);
         presenter.onStartApp();
     }
 
@@ -39,15 +35,14 @@ public class SplashActivity extends BaseActivity implements SplashCallback {
     }
 
     @Override
-    public void onSuccess(LoginResponse result ) {
-        switch(result.getResponse()){
+    public void onSuccess(String response, ArrayList<Question> questionArrayList) {
+        switch (response) {
             case "login": //if we dont have user saved then open the login activity
-                startActivity(new Intent(this,LoginActivity.class));
+                startActivity(new Intent(this, LoginActivity.class));
                 break;
             case "main": //If we jave an user saved then open the main activity
                 Intent main = new Intent(this, MainActivity.class);
-                main.putExtra("user",result.getUserRoom()); //TODO ESTO YA NO LO PASES, porque lo tienes en el sharedpreferences
-                main.putParcelableArrayListExtra("questions", result.getQuestionList());
+                main.putParcelableArrayListExtra("questions", questionArrayList);
                 startActivity(main);
                 break;
         }
@@ -59,6 +54,6 @@ public class SplashActivity extends BaseActivity implements SplashCallback {
 
     @Override
     public void onError(String error) {
-        SweetDialogs.sweetError(this,error);
+        SweetDialogs.sweetError(this, error);
     }
 }

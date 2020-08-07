@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
-import mx.rokegcode.psychologyapp.model.data.UserRoom;
+import mx.rokegcode.psychologyapp.model.data.User;
 
 public class SessionHelper {
 
@@ -19,18 +19,18 @@ public class SessionHelper {
         return mInstance;
     }
 
-    public UserRoom getUserSession(Context context) {
+    public User getUserSession(Context context) {
         Gson gson = new Gson();
         sharedPref = context.getSharedPreferences("PsychologyApp", Context.MODE_PRIVATE);
         String jsonUser = sharedPref.getString("user", "");
-        return gson.fromJson(jsonUser, UserRoom.class);
+        return gson.fromJson(jsonUser, User.class);
     }
 
-    public void setUserSession(Context context, UserRoom userRoom) {
+    public void setUserSession(Context context, User user) {
         Gson gson = new Gson();
         sharedPref = context.getSharedPreferences("PsychologyApp", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        String jsonUser = gson.toJson(userRoom);
+        String jsonUser = gson.toJson(user);
         editor.putString("user", jsonUser);
         editor.apply();
     }

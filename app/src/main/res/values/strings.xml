@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PsychologyApp</string>
+    <string name="enviar">Enviar</string>
 </resources>

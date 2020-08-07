@@ -2,18 +2,18 @@ package mx.rokegcode.psychologyapp.model.response;
 
 import java.util.ArrayList;
 
-import mx.rokegcode.psychologyapp.model.data.QuestionRoom;
-import mx.rokegcode.psychologyapp.model.data.UserRoom;
+import mx.rokegcode.psychologyapp.model.data.Question;
+import mx.rokegcode.psychologyapp.model.data.User;
 
 public class LoginResponse {
 
     private String response;
-    private UserRoom userRoom;
-    private ArrayList<QuestionRoom> questionList;
+    private User user;
+    private ArrayList<Question> questionList;
 
-    public LoginResponse(String response, UserRoom userRoom, ArrayList<QuestionRoom> questionList) {
+    public LoginResponse(String response, User user, ArrayList<Question> questionList) {
         this.response = response;
-        this.userRoom = userRoom;
+        this.user = user;
         this.questionList = questionList;
     }
 
@@ -26,19 +26,19 @@ public class LoginResponse {
         this.response = response;
     }
 
-    public UserRoom getUserRoom() {
-        return userRoom;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserRoom(UserRoom userRoom) {
-        this.userRoom = userRoom;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public ArrayList<QuestionRoom> getQuestionList() {
+    public ArrayList<Question> getQuestionList() {
         return questionList;
     }
 
-    public void setQuestionList(ArrayList<QuestionRoom> questionList) {
+    public void setQuestionList(ArrayList<Question> questionList) {
         this.questionList = questionList;
     }
 }

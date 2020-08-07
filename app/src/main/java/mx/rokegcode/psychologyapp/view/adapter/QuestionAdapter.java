@@ -1,29 +1,26 @@
 package mx.rokegcode.psychologyapp.view.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.MenuView;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import mx.rokegcode.psychologyapp.R;
-import mx.rokegcode.psychologyapp.model.data.QuestionRoom;
+import mx.rokegcode.psychologyapp.model.data.Question;
 
 public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHolder> {
-    List<QuestionRoom> questionList;
+    List<Question> questionList;
 
-    public QuestionAdapter(List<QuestionRoom> questionList) {
+    public QuestionAdapter(List<Question> questionList) {
         this.questionList = questionList;
     }
 
@@ -31,13 +28,14 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_question,parent,false));
+                .inflate(R.layout.item_question, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        //TODO AQUI MERENGUES Y ESQUE YO RECUERDO QUE SE LE MANDABA EL MODELO EN EL CONSTRUCTOR :C
-        holder.txtAnswer.setHint("holi"+position);
+        Question question = questionList.get(position);
+        holder.layoutQuestion.setHint(question.getPsyQuestion());
+        holder.editAnswer.setId(question.getPkQuestion());
     }
 
     @Override
@@ -45,16 +43,15 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
         return questionList.size();
     }
 
-    public void refreshInfo(List<QuestionRoom> model){
-        this.questionList = model;
-        notifyDataSetChanged();
-    }
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.layoutQuestion)
+        TextInputLayout layoutQuestion;
+        @BindView(R.id.editAnswer)
+        TextInputEditText editAnswer;
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.txtAnswer) TextInputEditText txtAnswer;
-
-        public ViewHolder(@NonNull View itemView){
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

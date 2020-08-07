@@ -1,10 +1,11 @@
 package mx.rokegcode.psychologyapp.presenter.callback;
 
-import mx.rokegcode.psychologyapp.model.data.UserRoom;
-import mx.rokegcode.psychologyapp.model.response.LoginResponse;
+import java.util.ArrayList;
+
+import mx.rokegcode.psychologyapp.model.data.Question;
 
 public interface SplashCallback {
-    void onSuccess(LoginResponse result);
+    void onSuccess(String response, ArrayList<Question> questionArrayList);
     void onLoading();
     void onError(String error);
 }

@@ -1,18 +1,19 @@
 package mx.rokegcode.psychologyapp.model.database;
 
-import java.util.List;
-
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import mx.rokegcode.psychologyapp.model.data.QuestionRoom;
+
+import java.util.List;
+
+import mx.rokegcode.psychologyapp.model.data.Question;
 
 @Dao
 public interface QuestionDao {
-    @Query("SELECT * FROM QUESTION WHERE FK_USER = :pkuser")
-    List<QuestionRoom> getUserSurvey(int pkuser);
+    @Query("SELECT * FROM QUESTION WHERE FK_USER = :pkUser")
+    List<Question> getUserSurvey(int pkUser);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertQuestion(QuestionRoom questionRoom);
+    void insertQuestion(Question question);
 }

@@ -1,52 +1,91 @@
 package mx.rokegcode.psychologyapp.view.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
+
+import androidx.appcompat.app.ActionBar;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import mx.rokegcode.psychologyapp.R;
-import mx.rokegcode.psychologyapp.model.data.QuestionRoom;
-import mx.rokegcode.psychologyapp.model.data.UserRoom;
+import mx.rokegcode.psychologyapp.model.data.Answer;
+import mx.rokegcode.psychologyapp.model.data.Question;
 import mx.rokegcode.psychologyapp.presenter.callback.MainCallback;
 import mx.rokegcode.psychologyapp.presenter.implementation.MainPresenter;
-import mx.rokegcode.psychologyapp.view.adapter.QuestionAdapter;
 
 public class MainActivity extends BaseActivity implements MainCallback {
-    private MainPresenter presenter;
-    private QuestionAdapter questionAdapter;
-    private RecyclerView recyclerViewQuestion;
-    private ArrayList<QuestionRoom> survey = null;
-    private UserRoom user = null;
+    private MainPresenter mPresenter;
 
-    //@BindView(R.id.lstQuestions) RecyclerView recyclerViewQuestion;
+    /*@BindView(R.id.recyclerQuestions)
+    RecyclerView recyclerViewQuestion;*/
+    @BindView(R.id.layoutQuestions)
+    LinearLayout layoutQuestions;
+
+    private ArrayList<Question> mSurvey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new MainPresenter(this,this,this);
-        user = getIntent().getExtras().getParcelable("user");
-        survey = getIntent().getExtras().getParcelableArrayList("survey");
-
-        initRecyclerView(survey);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("Cuestionario");
+        }
+        mPresenter = new MainPresenter(this, this, this);
+        if (getIntent().getExtras() != null) {
+            mSurvey = getIntent().getExtras().getParcelableArrayList("survey");
+            if (mSurvey != null) {
+                addViewQuestion(mSurvey);
+            }
+            //initRecyclerView(survey);
+        }
     }
 
-    private void initRecyclerView(ArrayList<QuestionRoom> survey){
-        recyclerViewQuestion = findViewById(R.id.lstQuestions);
+    /*private void initRecyclerView(ArrayList<Question> survey) {
         recyclerViewQuestion.setLayoutManager(new LinearLayoutManager(this));
-        questionAdapter = new QuestionAdapter(survey);
+        QuestionAdapter questionAdapter = new QuestionAdapter(survey);
         recyclerViewQuestion.setAdapter(questionAdapter);
-    }
+    }*/
 
 
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_main;
+    }
+
+    private void addViewQuestion(ArrayList<Question> survey) {
+        for (int i = 0; i < survey.size(); i++) {
+            @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_question_field, null);
+            TextInputLayout layoutQuestion = view.findViewById(R.id.layoutQuestion);
+            layoutQuestion.setHint(survey.get(i).getPsyQuestion());
+            TextInputEditText editAnswer = (TextInputEditText) layoutQuestion.getEditText();
+            if (editAnswer != null) {
+                editAnswer.setId(survey.get(i).getPkQuestion());
+            }
+            layoutQuestions.addView(view);
+        }
+    }
+
+    @OnClick(R.id.btnSendSurvey)
+    public void onSendSurvey() {
+        ArrayList<Answer> answers = new ArrayList<>();
+        for (int i = 0; i < mSurvey.size(); i++) {
+            Answer answer = new Answer();
+            answer.setFkQuestion(mSurvey.get(i).getPkQuestion());
+            TextInputEditText tmpEditText = findViewById(mSurvey.get(i).getPkQuestion());
+            if (tmpEditText.getText() != null) {
+                answer.setmAnswer(tmpEditText.getText().toString());
+            }
+            answers.add(answer);
+        }
+        mPresenter.sendSurveyRx(this, answers);
     }
 
     @Override
@@ -61,10 +100,6 @@ public class MainActivity extends BaseActivity implements MainCallback {
 
     @Override
     public void onSuccess(String result) {
-        switch(result){
-            case "survey":
 
-                break;
-        }
     }
 }

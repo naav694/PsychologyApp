@@ -6,10 +6,10 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import mx.rokegcode.psychologyapp.model.data.QuestionRoom;
-import mx.rokegcode.psychologyapp.model.data.UserRoom;
+import mx.rokegcode.psychologyapp.model.data.Question;
+import mx.rokegcode.psychologyapp.model.data.User;
 
-@Database(entities = {UserRoom.class, QuestionRoom.class}, exportSchema = false, version = 1)
+@Database(entities = {User.class, Question.class}, exportSchema = false, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "PSYCHOLOGY";
@@ -24,7 +24,6 @@ public abstract class AppDatabase extends RoomDatabase {
         return mInstance;
     }
 
-    //DECLARE DAOs HERE
     public abstract UserDao userDao();
 
     public abstract QuestionDao questionDao();

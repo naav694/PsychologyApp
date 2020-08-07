@@ -2,15 +2,13 @@ package mx.rokegcode.psychologyapp.presenter.implementation;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import mx.rokegcode.psychologyapp.model.data.UserRoom;
-import mx.rokegcode.psychologyapp.model.database.AppDatabase;
-import mx.rokegcode.psychologyapp.model.repository.QuestionRepository;
+import java.util.ArrayList;
+
+import mx.rokegcode.psychologyapp.model.data.Answer;
+import mx.rokegcode.psychologyapp.model.repository.AnswerRepository;
 import mx.rokegcode.psychologyapp.presenter.callback.MainCallback;
-import mx.rokegcode.psychologyapp.util.SessionHelper;
 
 public class MainPresenter extends BasePresenter{
     private MainCallback callback;
@@ -20,12 +18,12 @@ public class MainPresenter extends BasePresenter{
         this.callback = callback;
     }
 
-    /*
+    /**
     * This method search the survey(group of questions) for the respective user
     */
-    public void GetSurvey(Context context){
-
-        QuestionRepository questionRepository = new QuestionRepository();
+    public void sendSurveyRx(Context context, ArrayList<Answer> answerArrayList){
+        Log.e("beep", "stop");
+        AnswerRepository answerRepository = new AnswerRepository();
         //Searching the questions in the local database
         /*disposable = Observable.fromCallable(()-> questionRepository.getSurvey(context))
                 .subscribeOn(Schedulers.io())
