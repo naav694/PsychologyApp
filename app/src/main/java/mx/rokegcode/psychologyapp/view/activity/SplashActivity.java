@@ -39,11 +39,13 @@ public class SplashActivity extends BaseActivity implements SplashCallback {
         switch (response) {
             case "login": //if we dont have user saved then open the login activity
                 startActivity(new Intent(this, LoginActivity.class));
+                this.finish();
                 break;
             case "main": //If we jave an user saved then open the main activity
                 Intent main = new Intent(this, MainActivity.class);
-                main.putParcelableArrayListExtra("questions", questionArrayList);
+                main.putParcelableArrayListExtra("survey", questionArrayList);
                 startActivity(main);
+                this.finish();
                 break;
         }
     }

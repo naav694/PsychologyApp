@@ -6,6 +6,9 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import mx.rokegcode.psychologyapp.model.data.Answer;
 import mx.rokegcode.psychologyapp.model.repository.AnswerRepository;
 import mx.rokegcode.psychologyapp.presenter.callback.MainCallback;
@@ -22,10 +25,9 @@ public class MainPresenter extends BasePresenter{
     * This method search the survey(group of questions) for the respective user
     */
     public void sendSurveyRx(Context context, ArrayList<Answer> answerArrayList){
-        Log.e("beep", "stop");
         AnswerRepository answerRepository = new AnswerRepository();
         //Searching the questions in the local database
-        /*disposable = Observable.fromCallable(()-> questionRepository.getSurvey(context))
+        disposable = Observable.fromCallable(()-> answerRepository.onSendSurvey(context,answerArrayList))
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(result -> callback.onLoading())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -33,7 +35,7 @@ public class MainPresenter extends BasePresenter{
                     callback.onSuccess(result);
                 },throwable -> {
                     callback.onError(throwable.getMessage());
-                });*/
+                });
     }
 
 }

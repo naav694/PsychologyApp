@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 
@@ -15,21 +16,21 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import mx.rokegcode.psychologyapp.R;
 import mx.rokegcode.psychologyapp.model.data.Answer;
 import mx.rokegcode.psychologyapp.model.data.Question;
 import mx.rokegcode.psychologyapp.presenter.callback.MainCallback;
 import mx.rokegcode.psychologyapp.presenter.implementation.MainPresenter;
+import mx.rokegcode.psychologyapp.view.dialog.SweetDialogs;
 
 public class MainActivity extends BaseActivity implements MainCallback {
-    private MainPresenter mPresenter;
-
-    /*@BindView(R.id.recyclerQuestions)
-    RecyclerView recyclerViewQuestion;*/
     @BindView(R.id.layoutQuestions)
     LinearLayout layoutQuestions;
 
+    private SweetAlertDialog sweetProgress;
     private ArrayList<Question> mSurvey;
+    private MainPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +45,8 @@ public class MainActivity extends BaseActivity implements MainCallback {
             if (mSurvey != null) {
                 addViewQuestion(mSurvey);
             }
-            //initRecyclerView(survey);
         }
     }
-
-    /*private void initRecyclerView(ArrayList<Question> survey) {
-        recyclerViewQuestion.setLayoutManager(new LinearLayoutManager(this));
-        QuestionAdapter questionAdapter = new QuestionAdapter(survey);
-        recyclerViewQuestion.setAdapter(questionAdapter);
-    }*/
-
 
     @Override
     protected int getLayoutResource() {
@@ -75,31 +68,43 @@ public class MainActivity extends BaseActivity implements MainCallback {
 
     @OnClick(R.id.btnSendSurvey)
     public void onSendSurvey() {
-        ArrayList<Answer> answers = new ArrayList<>();
-        for (int i = 0; i < mSurvey.size(); i++) {
-            Answer answer = new Answer();
-            answer.setFkQuestion(mSurvey.get(i).getPkQuestion());
+        boolean completas = true;
+        for(int i = 0; i < mSurvey.size(); i++){
             TextInputEditText tmpEditText = findViewById(mSurvey.get(i).getPkQuestion());
-            if (tmpEditText.getText() != null) {
-                answer.setmAnswer(tmpEditText.getText().toString());
+            if(tmpEditText.getText() == null){
+                completas = false;
             }
-            answers.add(answer);
         }
-        mPresenter.sendSurveyRx(this, answers);
+        if(completas){
+            ArrayList<Answer> answers = new ArrayList<>();
+            for (int i = 0; i < mSurvey.size(); i++) {
+                Answer answer = new Answer();
+                answer.setFkQuestion(mSurvey.get(i).getPkQuestion());
+                TextInputEditText tmpEditText = findViewById(mSurvey.get(i).getPkQuestion());
+                if (tmpEditText.getText() != null) {
+                    answer.setAnswer(tmpEditText.getText().toString());
+                }
+                answers.add(answer);
+            }
+            mPresenter.sendSurveyRx(this, answers);
+        }
     }
 
     @Override
     public void onLoading() {
-
+        sweetProgress = SweetDialogs.sweetLoading(this, "Guardando respuestas...");
+        sweetProgress.show();
     }
 
     @Override
     public void onError(String error) {
-
+        sweetProgress.dismiss();
+        SweetDialogs.sweetError(this,error).show();
     }
 
     @Override
     public void onSuccess(String result) {
-
+        sweetProgress.dismiss();
+        SweetDialogs.sweetSuccessCloseActivity(this,result,this).show();
     }
 }

@@ -15,7 +15,7 @@ public class Answer implements Parcelable {
     @ColumnInfo(name = "FK_PREGUNTA")
     private int fkQuestion;
     @ColumnInfo(name = "ANSWER")
-    private String mAnswer;
+    private String Answer;
     @ColumnInfo(name = "SENT_STATUS")
     private String sentStatus; //E: Enviado, N: No enviado
 
@@ -26,7 +26,7 @@ public class Answer implements Parcelable {
     protected Answer(Parcel in) {
         pkAnswer = in.readInt();
         fkQuestion = in.readInt();
-        mAnswer = in.readString();
+        Answer = in.readString();
         sentStatus = in.readString();
     }
 
@@ -34,7 +34,7 @@ public class Answer implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(pkAnswer);
         parcel.writeInt(fkQuestion);
-        parcel.writeString(mAnswer);
+        parcel.writeString(Answer);
         parcel.writeString(sentStatus);
     }
 
@@ -63,20 +63,20 @@ public class Answer implements Parcelable {
         this.pkAnswer = pkAnswer;
     }
 
+    public String getAnswer() {
+        return Answer;
+    }
+
+    public void setAnswer(String answer) {
+        Answer = answer;
+    }
+
     public int getFkQuestion() {
         return fkQuestion;
     }
 
     public void setFkQuestion(int fkQuestion) {
         this.fkQuestion = fkQuestion;
-    }
-
-    public String getmAnswer() {
-        return mAnswer;
-    }
-
-    public void setmAnswer(String mAnswer) {
-        this.mAnswer = mAnswer;
     }
 
     public String getSentStatus() {
