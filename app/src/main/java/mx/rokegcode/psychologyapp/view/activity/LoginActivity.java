@@ -80,6 +80,6 @@ public class LoginActivity extends BaseActivity implements LoginCallback {
         Intent i = new Intent(this, MainActivity.class);
         i.putParcelableArrayListExtra("survey", result.getQuestionList());
         startActivity(i);
-        this.finish();
+        finish();
     }
 }

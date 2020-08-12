@@ -68,26 +68,22 @@ public class MainActivity extends BaseActivity implements MainCallback {
 
     @OnClick(R.id.btnSendSurvey)
     public void onSendSurvey() {
-        boolean completas = true;
-        for(int i = 0; i < mSurvey.size(); i++){
+        ArrayList<Answer> answers = new ArrayList<>();
+        for (int i = 0; i < mSurvey.size(); i++) {
             TextInputEditText tmpEditText = findViewById(mSurvey.get(i).getPkQuestion());
             if(tmpEditText.getText() == null){
-                completas = false;
+                return;
             }
-        }
-        if(completas){
-            ArrayList<Answer> answers = new ArrayList<>();
-            for (int i = 0; i < mSurvey.size(); i++) {
-                Answer answer = new Answer();
-                answer.setFkQuestion(mSurvey.get(i).getPkQuestion());
-                TextInputEditText tmpEditText = findViewById(mSurvey.get(i).getPkQuestion());
-                if (tmpEditText.getText() != null) {
-                    answer.setAnswer(tmpEditText.getText().toString());
-                }
-                answers.add(answer);
+            Answer answer = new Answer();
+            answer.setFkQuestion(mSurvey.get(i).getPkQuestion());
+            answer.setSentStatus("N");
+
+            if (tmpEditText.getText() != null) {
+                answer.setAnswer(tmpEditText.getText().toString());
             }
-            mPresenter.sendSurveyRx(this, answers);
+            answers.add(answer);
         }
+        mPresenter.sendSurveyRx(this, answers);
     }
 
     @Override

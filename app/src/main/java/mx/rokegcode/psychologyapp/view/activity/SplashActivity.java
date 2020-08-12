@@ -35,17 +35,17 @@ public class SplashActivity extends BaseActivity implements SplashCallback {
     }
 
     @Override
-    public void onSuccess(String response, ArrayList<Question> questionArrayList) {
-        switch (response) {
+    public void onSuccess(LoginResponse response) {
+        switch (response.getResponse()) {
             case "login": //if we dont have user saved then open the login activity
                 startActivity(new Intent(this, LoginActivity.class));
-                this.finish();
+                finish();
                 break;
             case "main": //If we jave an user saved then open the main activity
                 Intent main = new Intent(this, MainActivity.class);
-                main.putParcelableArrayListExtra("survey", questionArrayList);
+                main.putParcelableArrayListExtra("survey", response.getQuestionList());
                 startActivity(main);
-                this.finish();
+                finish();
                 break;
         }
     }

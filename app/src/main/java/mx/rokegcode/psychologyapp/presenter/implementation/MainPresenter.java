@@ -27,7 +27,7 @@ public class MainPresenter extends BasePresenter{
     public void sendSurveyRx(Context context, ArrayList<Answer> answerArrayList){
         AnswerRepository answerRepository = new AnswerRepository();
         //Searching the questions in the local database
-        disposable = Observable.fromCallable(()-> answerRepository.onSendSurvey(context,answerArrayList))
+         disposable = Observable.fromCallable(()-> answerRepository.onSendSurvey(context,answerArrayList))
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(result -> callback.onLoading())
                 .observeOn(AndroidSchedulers.mainThread())

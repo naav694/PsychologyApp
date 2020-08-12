@@ -9,7 +9,9 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import mx.rokegcode.psychologyapp.model.data.User;
+import mx.rokegcode.psychologyapp.model.repository.AnswerRepository;
 import mx.rokegcode.psychologyapp.model.repository.UserRepository;
+import mx.rokegcode.psychologyapp.model.response.LoginResponse;
 import mx.rokegcode.psychologyapp.presenter.callback.SplashCallback;
 
 public class SplashPresenter extends BasePresenter {
@@ -21,10 +23,18 @@ public class SplashPresenter extends BasePresenter {
     }
 
     public void onStartApp() {
-        UserRepository userRepository = new UserRepository();
+        AnswerRepository answerRepository = new AnswerRepository();
         if (sessionHelper.getRememberSession(context)) {
             User user = sessionHelper.getUserSession(context);
-            disposable = Observable.fromCallable(() -> userRepository.onLogin(context, user.getUserName(), user.getUserPassword()))
+            disposable = Observable.fromCallable(() -> answerRepository.sendPendingAnswers(context,user))
+                    .subscribeOn((Schedulers.io()))
+                    .doOnSubscribe(result-> callback.onLoading())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(result ->{
+                        callback.onSuccess(result);
+                    },throwable -> callback.onError(throwable.getMessage()));
+
+            /*disposable = Observable.fromCallable(() -> userRepository.onLogin(context, user.getUserName(), user.getUserPassword()))
                     .subscribeOn(Schedulers.io())
                     .doOnSubscribe(result -> callback.onLoading())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -34,9 +44,9 @@ public class SplashPresenter extends BasePresenter {
                         } else {
                             callback.onError(result.getResponse());
                         }
-                    }, throwable -> callback.onError(throwable.getMessage()));
+                    }, throwable -> callback.onError(throwable.getMessage()));*/
         } else {
-            callback.onSuccess("login", new ArrayList<>());
+            callback.onSuccess( new LoginResponse("login",null,null));
         }
 
     }

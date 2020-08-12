@@ -10,10 +10,14 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import mx.rokegcode.psychologyapp.model.api.VolleyClient;
 import mx.rokegcode.psychologyapp.model.data.Answer;
+import mx.rokegcode.psychologyapp.model.data.Question;
+import mx.rokegcode.psychologyapp.model.data.User;
 import mx.rokegcode.psychologyapp.model.database.AppDatabase;
+import mx.rokegcode.psychologyapp.model.response.LoginResponse;
 import mx.rokegcode.psychologyapp.util.InternetConnection;
 
 public class AnswerRepository {
@@ -50,4 +54,21 @@ public class AnswerRepository {
         AppDatabase.getInstance(context).answerDao().insertAnswers(answerArrayList);
         return "Las respuestas se guardaron en el telefono";
     }
+
+    public LoginResponse sendPendingAnswers(Context context, User user) throws Exception {
+        ArrayList<Answer> answers = new ArrayList<>();
+        answers = (ArrayList<Answer>) AppDatabase.getInstance(context).answerDao().getPendingAnswers();
+        String url = "https://sistemascoatepec.000webhostapp.com/ws/ws.php?accion=SaveAnswers";
+        RequestFuture<JSONObject> request = VolleyClient.getInstance().createRequest(context,url, Request.Method.POST, createJSONSurvey(answers));
+        JSONObject response = request.get();
+        if(response.getString("RESPUESTA").equals("OK")){
+            for(int i = 0; i < answers.size(); i++){
+                answers.get(i).setSentStatus("E");
+                AppDatabase.getInstance(context).answerDao().updateAnswerStatus(answers.get(i));
+            }
+        }
+        ArrayList<Question> survey = (ArrayList<Question>) AppDatabase.getInstance(context).questionDao().getUserSurvey(user.getPkUser());
+        return new LoginResponse("main",user,survey);
+    }
+
 }

@@ -26,6 +26,8 @@ import mx.rokegcode.psychologyapp.util.InternetConnection;
 public class UserRepository {
 
     public LoginResponse onLogin(Context context, String userName, String password) throws Exception {
+        AnswerRepository answerRepository = new AnswerRepository();
+
         if (InternetConnection.isConnected(context)) {
             return getUserFromWebService(context, userName, password);
         } else {
