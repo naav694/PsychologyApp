@@ -55,7 +55,7 @@ public class AnswerRepository {
         return "Las respuestas se guardaron en el telefono";
     }
 
-    public LoginResponse sendPendingAnswers(Context context, User user) throws Exception {
+    public void sendPendingAnswers(Context context) throws Exception {
         ArrayList<Answer> answers = new ArrayList<>();
         answers = (ArrayList<Answer>) AppDatabase.getInstance(context).answerDao().getPendingAnswers();
         String url = "https://sistemascoatepec.000webhostapp.com/ws/ws.php?accion=SaveAnswers";
@@ -67,8 +67,6 @@ public class AnswerRepository {
                 AppDatabase.getInstance(context).answerDao().updateAnswerStatus(answers.get(i));
             }
         }
-        ArrayList<Question> survey = (ArrayList<Question>) AppDatabase.getInstance(context).questionDao().getUserSurvey(user.getPkUser());
-        return new LoginResponse("main",user,survey);
     }
 
 }

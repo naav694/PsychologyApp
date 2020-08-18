@@ -23,18 +23,10 @@ public class SplashPresenter extends BasePresenter {
     }
 
     public void onStartApp() {
-        AnswerRepository answerRepository = new AnswerRepository();
+        UserRepository userRepository = new UserRepository();
         if (sessionHelper.getRememberSession(context)) {
             User user = sessionHelper.getUserSession(context);
-            disposable = Observable.fromCallable(() -> answerRepository.sendPendingAnswers(context,user))
-                    .subscribeOn((Schedulers.io()))
-                    .doOnSubscribe(result-> callback.onLoading())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(result ->{
-                        callback.onSuccess(result);
-                    },throwable -> callback.onError(throwable.getMessage()));
-
-            /*disposable = Observable.fromCallable(() -> userRepository.onLogin(context, user.getUserName(), user.getUserPassword()))
+            disposable = Observable.fromCallable(() -> userRepository.onLogin(context, user.getUserName(), user.getUserPassword()))
                     .subscribeOn(Schedulers.io())
                     .doOnSubscribe(result -> callback.onLoading())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -44,9 +36,9 @@ public class SplashPresenter extends BasePresenter {
                         } else {
                             callback.onError(result.getResponse());
                         }
-                    }, throwable -> callback.onError(throwable.getMessage()));*/
+                    }, throwable -> callback.onError(throwable.getMessage()));
         } else {
-            callback.onSuccess( new LoginResponse("login",null,null));
+            callback.onSuccess("login", new ArrayList<>());
         }
 
     }

@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
+import androidx.appcompat.app.ActionBar;
 import butterknife.BindView;
 import mx.rokegcode.psychologyapp.R;
 import mx.rokegcode.psychologyapp.model.data.Question;
@@ -25,6 +26,10 @@ public class SplashActivity extends BaseActivity implements SplashCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null){
+            actionBar.hide();
+        }
         presenter = new SplashPresenter(this, this, this);
         presenter.onStartApp();
     }
@@ -35,15 +40,15 @@ public class SplashActivity extends BaseActivity implements SplashCallback {
     }
 
     @Override
-    public void onSuccess(LoginResponse response) {
-        switch (response.getResponse()) {
+    public void onSuccess(String response, ArrayList<Question> questionArrayList) {
+        switch (response) {
             case "login": //if we dont have user saved then open the login activity
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
                 break;
             case "main": //If we jave an user saved then open the main activity
                 Intent main = new Intent(this, MainActivity.class);
-                main.putParcelableArrayListExtra("survey", response.getQuestionList());
+                main.putParcelableArrayListExtra("survey", questionArrayList);
                 startActivity(main);
                 finish();
                 break;

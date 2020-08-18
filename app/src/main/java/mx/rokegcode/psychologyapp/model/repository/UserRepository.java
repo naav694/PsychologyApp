@@ -26,9 +26,9 @@ import mx.rokegcode.psychologyapp.util.InternetConnection;
 public class UserRepository {
 
     public LoginResponse onLogin(Context context, String userName, String password) throws Exception {
-        AnswerRepository answerRepository = new AnswerRepository();
-
         if (InternetConnection.isConnected(context)) {
+            AnswerRepository answerRepository = new AnswerRepository();
+            answerRepository.sendPendingAnswers(context);
             return getUserFromWebService(context, userName, password);
         } else {
             return getUserFromRoom(context, userName, password);
@@ -58,8 +58,8 @@ public class UserRepository {
             user.setSurveyFrequency(jsonUser.getInt("FRECUENCIA"));
             AppDatabase.getInstance(context).userDao().insertUser(user);
             Calendar c = Calendar.getInstance();
-            c.set(Calendar.HOUR_OF_DAY, 1);
-            c.set(Calendar.MINUTE, 20);
+            c.set(Calendar.HOUR_OF_DAY, user.getSurveyFrequency());
+            c.set(Calendar.MINUTE, 0);
             c.set(Calendar.SECOND, 0);
             startAlarm(context, c);
             JSONArray jsonArraySurvey = response.getJSONArray("SURVEY");
