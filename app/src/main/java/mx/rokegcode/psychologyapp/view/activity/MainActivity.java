@@ -70,20 +70,26 @@ public class MainActivity extends BaseActivity implements MainCallback {
 
     @OnClick(R.id.btnSendSurvey)
     public void onSendSurvey() {
+        boolean send = true;
         ArrayList<Answer> answers = new ArrayList<>();
         for (int i = 0; i < mSurvey.size(); i++) {
             TextInputEditText tmpEditText = findViewById(mSurvey.get(i).getPkQuestion());
             Answer answer = new Answer();
             answer.setFkQuestion(mSurvey.get(i).getPkQuestion());
             answer.setSentStatus("N");
-            if (tmpEditText.getText() != null) {
-                answer.setAnswer(tmpEditText.getText().toString());
-            } else {
+            if (tmpEditText.getText().toString().equals("")) {
+                send = false;
                 break;
+            } else {
+                answer.setAnswer(tmpEditText.getText().toString());
             }
             answers.add(answer);
         }
-        mPresenter.sendSurveyRx(this, answers);
+        if (send) {
+            mPresenter.sendSurveyRx(this, answers);
+        } else {
+            SweetDialogs.sweetWarning(this, "Debe contestar todas las preguntas").show();
+        }
     }
 
     @Override
@@ -95,12 +101,12 @@ public class MainActivity extends BaseActivity implements MainCallback {
     @Override
     public void onError(String error) {
         sweetProgress.dismiss();
-        SweetDialogs.sweetError(this,error).show();
+        SweetDialogs.sweetError(this, error).show();
     }
 
     @Override
     public void onSuccess(String result) {
         sweetProgress.dismiss();
-        SweetDialogs.sweetSuccessCloseActivity(this,result,this).show();
+        SweetDialogs.sweetSuccessCloseActivity(this, result, this).show();
     }
 }

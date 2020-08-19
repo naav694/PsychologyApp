@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.RequestFuture;
@@ -58,9 +59,9 @@ public class UserRepository {
             user.setSurveyFrequency(jsonUser.getInt("FRECUENCIA"));
             AppDatabase.getInstance(context).userDao().insertUser(user);
             Calendar c = Calendar.getInstance();
-            c.set(Calendar.HOUR_OF_DAY, user.getSurveyFrequency());
-            c.set(Calendar.MINUTE, 0);
-            c.set(Calendar.SECOND, 0);
+            c.set(Calendar.HOUR_OF_DAY, (c.get(Calendar.HOUR_OF_DAY)+user.getSurveyFrequency()));
+            c.set(Calendar.MINUTE, c.get(Calendar.HOUR));
+            c.set(Calendar.SECOND, c.get(Calendar.SECOND));
             startAlarm(context, c);
             JSONArray jsonArraySurvey = response.getJSONArray("SURVEY");
             ArrayList<Question> survey = new ArrayList<>();
