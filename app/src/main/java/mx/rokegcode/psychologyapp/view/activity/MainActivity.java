@@ -1,6 +1,7 @@
 package mx.rokegcode.psychologyapp.view.activity;
 
 import android.annotation.SuppressLint;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +59,7 @@ public class MainActivity extends BaseActivity implements MainCallback {
             @SuppressLint("InflateParams") View view = LayoutInflater.from(this).inflate(R.layout.layout_question_field, null);
             TextInputLayout layoutQuestion = view.findViewById(R.id.layoutQuestion);
             layoutQuestion.setHint(survey.get(i).getPsyQuestion());
+            layoutQuestion.setHintTextColor(ColorStateList.valueOf(getColor(R.color.colorAccent)));
             TextInputEditText editAnswer = (TextInputEditText) layoutQuestion.getEditText();
             if (editAnswer != null) {
                 editAnswer.setId(survey.get(i).getPkQuestion());
@@ -71,15 +73,13 @@ public class MainActivity extends BaseActivity implements MainCallback {
         ArrayList<Answer> answers = new ArrayList<>();
         for (int i = 0; i < mSurvey.size(); i++) {
             TextInputEditText tmpEditText = findViewById(mSurvey.get(i).getPkQuestion());
-            if(tmpEditText.getText() == null){
-                return;
-            }
             Answer answer = new Answer();
             answer.setFkQuestion(mSurvey.get(i).getPkQuestion());
             answer.setSentStatus("N");
-
             if (tmpEditText.getText() != null) {
                 answer.setAnswer(tmpEditText.getText().toString());
+            } else {
+                break;
             }
             answers.add(answer);
         }

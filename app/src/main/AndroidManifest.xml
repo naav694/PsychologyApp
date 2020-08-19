@@ -14,17 +14,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <!--<activity android:name=".view.activity.LoginActivity">-->
-        <activity android:name=".view.activity.SplashActivity">
+        <activity
+            android:name=".view.activity.SplashActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:taskAffinity="">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity android:name=".view.activity.SplashActivity" />-->
-        <activity android:name=".view.activity.LoginActivity"/>
-        <activity android:name=".view.activity.MainActivity"/>
-        <receiver android:name=".util.AlertReceiver"/>
+        <activity android:name=".view.activity.LoginActivity" />
+        <activity android:name=".view.activity.MainActivity" />
+
+        <receiver android:name=".util.AlertReceiver" />
     </application>
 
 </manifest>

@@ -10,7 +10,7 @@ public class AlertReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         NotificationHelper notificationHelper = new NotificationHelper(context);
-        NotificationCompat.Builder nb  = notificationHelper.getChannelNotification("Responder escuenta","Por favor responda las siguientes preguntas");
-        notificationHelper.getManager().notify(1,nb.build());
+        NotificationCompat.Builder nb = notificationHelper.getChannelNotification("Responder escuenta", "Por favor responda las siguientes preguntas");
+        notificationHelper.getManager().notify(1, nb.build());
     }
 }
