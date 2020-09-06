@@ -31,7 +31,8 @@ public class AnswerRepository {
     }
 
     private String surveyToWB(Context context, ArrayList<Answer> answerArrayList) throws Exception{
-        String url = "https://sistemascoatepec.000webhostapp.com/ws/ws.php?accion=SaveAnswers";
+        //String url = "https://sistemascoatepec.000webhostapp.com/ws/ws.php?accion=SaveAnswers";
+        String url = "https://psyproject.devmaw.com/ws/ws.php?accion=SaveAnswers";
         RequestFuture<JSONObject> request = VolleyClient.getInstance().createRequest(context,url, Request.Method.POST, createJSONSurvey(answerArrayList));
         JSONObject response = request.get();
         return response.getString("MENSAJE");
@@ -58,7 +59,8 @@ public class AnswerRepository {
     public void sendPendingAnswers(Context context) throws Exception {
         ArrayList<Answer> answers = new ArrayList<>();
         answers = (ArrayList<Answer>) AppDatabase.getInstance(context).answerDao().getPendingAnswers();
-        String url = "https://sistemascoatepec.000webhostapp.com/ws/ws.php?accion=SaveAnswers";
+        //String url = "https://sistemascoatepec.000webhostapp.com/ws/ws.php?accion=SaveAnswers";
+        String url = "https://psyproject.devmaw.com/ws/ws.php?accion=SaveAnswers";
         RequestFuture<JSONObject> request = VolleyClient.getInstance().createRequest(context,url, Request.Method.POST, createJSONSurvey(answers));
         JSONObject response = request.get();
         if(response.getString("RESPUESTA").equals("OK")){

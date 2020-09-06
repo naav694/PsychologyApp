@@ -47,7 +47,8 @@ public class UserRepository {
     }
 
     private LoginResponse getUserFromWebService(Context context, String userName, String password) throws Exception {
-        String url = "https://sistemascoatepec.000webhostapp.com/ws/ws.php?accion=GetUser";
+        //String url = "https://sistemascoatepec.000webhostapp.com/ws/ws.php?accion=GetUser";
+        String url = "https://psyproject.devmaw.com/ws/ws.php?accion=GetUser";
         RequestFuture<JSONObject> request = VolleyClient.getInstance().createRequest(context, url, Request.Method.POST, createUserJSON(userName, password));
         JSONObject response = request.get();
         if (response.getString("RESPUESTA").equals("OK")) {
